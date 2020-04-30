@@ -1,0 +1,36 @@
+---
+
+- name: provision server
+  hosts: all
+  become: true
+  become_user: root
+  vars:
+    sshgroup_name: sshusers
+    iptables_allowed_ports:
+      - {protocol: tcp, port: 80}
+    user:
+      login: deploy
+      password_hash:
+        "$6$NwI7op8FHR1VQta6$zuQXHtNtM/7SRQsf1./18WbBrHMq4mT88nWh67ThmlWcqyVX3\
+        FBTY9uj/07tR9ViDEvjg6/bh0y3mSjeDQYe3."
+      authorized_key:
+        "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YV\
+        r+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv\
+        6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn\
+        5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0\
+        jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE9\
+        8OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+  tasks:
+    - import_tasks: provision_1_users.yml
+    - import_tasks: provision_2_software.yml
+    - name: Apply iptables settings and override defult variable value
+      import_tasks: provision_3_iptables.yml
+      vars:
+        iptables_allowed_ports:
+          - {protocol: tcp, port: 180}
+          - {protocol: tcp, port: 1443}
+          - {protocol: udp, port: 1161}
+    - import_tasks: provision_4_site.yml
+    - name: Print message
+      debug:
+        msg: "Site locates at http://localhost:8080/"

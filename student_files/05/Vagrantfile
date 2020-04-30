@@ -1,0 +1,44 @@
+# set default values
+no_proxy   = ENV['no_proxy']
+http_proxy = ENV['http_proxy']
+path_to_roles_inside_vm = '/roles'
+path_to_vault_password  = '/home/vagrant/ansible-vault.pass'
+
+Vagrant.configure('2') do |config|
+  # configure vagrant-proxyconf plugin
+  unless http_proxy.nil?
+    config.proxy.enabled  = true
+    config.proxy.http     = http_proxy
+    config.proxy.https    = http_proxy
+    config.proxy.no_proxy = no_proxy
+  end
+
+  config.vm.synced_folder './', '/vagrant', mount_options: ['dmode=775,fmode=755']
+  config.vm.network 'forwarded_port', guest: 80, host: 8080
+  config.vm.box = 'bento/centos-7.7'
+  config.vm.provider 'virtualbox' do |box|
+    box.memory = 1024
+  end
+
+  # create directory for roles downloaded by ansible galaxy
+  config.vm.provision "Create vault password file: #{path_to_vault_password}",
+                      type: :shell,
+                      inline: "echo 'password' >  #{path_to_vault_password} ;
+                               chmod 644 #{path_to_vault_password}"
+
+  # Create ansible vault password
+  config.vm.provision "Set permissions to #{path_to_roles_inside_vm}",
+                      type: :shell,
+                      inline: "mkdir -p #{path_to_roles_inside_vm} ;
+                               chmod o+w #{path_to_roles_inside_vm}"
+
+  # rm -rf /roles/ultral.ansible_development/ ; ansible-galaxy install --roles-path /roles ultral.ansible_development
+  # ANSIBLE_ROLES_PATH=/vagrant/roles/:/roles/ ansible-playbook -c local -i 'asd,' provision_me.yml
+  config.vm.provision 'ansible_local' do |ansible|
+    ansible.playbook = '/vagrant/provision_me.yml'
+    ansible.galaxy_roles_path = path_to_roles_inside_vm
+    ansible.galaxy_role_file = '/vagrant/requirements.yml'
+    ansible.config_file = '/vagrant/ansible.cfg'
+    ansible.verbose = 'v'
+  end
+end

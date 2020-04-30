@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+  - include_tasks: msg.yml
+    loop:
+      - 1
+      - 2

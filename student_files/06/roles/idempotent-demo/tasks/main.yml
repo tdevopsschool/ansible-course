@@ -1,0 +1,55 @@
+---
+- name: Application is installed
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/bin/
+  with_items:
+    - workshop.py
+    - workshop_.py
+#  register: copy_application_files_result
+#  notify:
+#    - restart service workshop
+
+- name: Application unit file is installed
+  copy:
+    src: workshop.service
+    dest: /etc/systemd/system/
+#  notify:
+#    - restart service workshop
+
+#- name: Application config is absent
+#  file:
+#    name: /tmp/workshop.conf
+#    state: absent
+#  when: copy_application_files_result.changed
+
+#- name: Config file is generated
+#  command: /usr/bin/python2 /tmp/bin/workshop.py generate
+#  args:
+#    creates: /tmp/workshop.conf
+
+#- name: Config file is validated
+#  command: /usr/bin/python2 /tmp/bin/workshop.py validate
+#  register: validate_configuration_file_result
+#  failed_when: >
+#    validate_configuration_file_result.rc !=0
+#    and
+#    validate_configuration_file_result.stderr != "Config file is invalid"
+#  changed_when: false
+
+#- name: Validation is failed
+#  debug:
+#    msg: "Config file is invalid."
+#  when: validate_configuration_file_result.stderr == "Config file is invalid"
+#  failed_when: true
+
+- name: Service is started
+  systemd:
+    name: workshop
+    state: started
+ #   daemon_reload: true
+
+#- name: Services is checked
+#  wait_for:
+#    path: /tmp/workshop.sock
+#    timeout: 30

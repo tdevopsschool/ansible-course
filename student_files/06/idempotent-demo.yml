@@ -1,0 +1,7 @@
+---
+- name: idempotent demo
+  hosts: localhost
+  become: true
+  become_user: root
+  roles:
+    - role: idempotent-demo

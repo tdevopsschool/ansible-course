@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  vars:
+    iptables_allowed_ports:
+      - {port_number: 22, type: tcp}
+      - {port_number: 80, type: tcp}
+      - {port_number: 161, type: udp}
+  tasks:
+    - name: iptables is configured
+      copy:
+        dest: /etc/sysconfig/iptables
+        content: |+
+          *filter
+          :INPUT DROP [0:0]
+          :FORWARD DROP [0:0]
+          :OUTPUT ACCEPT [0:0]
+          -A INPUT -i lo -j ACCEPT
+          -A INPUT -m state --state ESTABLISHED -j ACCEPT
+          -A INPUT -p icmp --icmp-type 0 -j ACCEPT
+          {% if iptables_allowed_ports is defined %}
+          {% for rule in iptables_allowed_ports %}
+          -A INPUT -p {{ rule.type }} -d {{ rule.port_number }} -j ACCEPT
+          {% endfor %}
+          {% endif %}
+          COMMIT
+          *nat
+          :PREROUTING ACCEPT [0:0]
+          :INPUT ACCEPT [0:0]
+          :OUTPUT ACCEPT [0:0]
+          :POSTROUTING ACCEPT [0:0]
+          COMMIT
+        validate: /sbin/iptables-restore --test %s

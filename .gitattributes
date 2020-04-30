@@ -1,0 +1,14 @@
+*.yml text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.ini text eol=lf
+*.j2 text eol=lf
+*.pub text eol=lf
+*.key text eol=lf
+Vagrantfile text eol=lf
+*.pdf binary
+*.pptx binary
+*.odg binary
+*.png binary
+*.jpeg binary

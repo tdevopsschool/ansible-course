@@ -1,0 +1,31 @@
+---
+- name: groups are created
+  group:
+    name: "{{ cau_group }}"
+    state: present
+  loop: "{{ cau_admin_groups }}"
+  loop_control:
+    loop_var: cau_group
+
+- name: create admin {{ cau_admin_name }} account
+  user:
+    name: "{{ cau_admin_name }}"
+    groups: "{{ cau_admin_groups | join(',')  }}"
+    shell: /bin/bash
+    update_password: always
+    password: "{{ cau_admin_passwd }}"
+
+- name: admin {{ cau_admin_name }} can sudo without password
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "{{ cau_admin_name }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    validate: visudo -cf %s
+
+- name: admin {{ admin_name }} has access via pub key
+  authorized_key:
+    user: "{{ cau_admin_name }}"
+    key: "{{ cau_ssh_key }}"
+  loop: "{{ cau_admin_ssh_keys }}"
+  loop_control:
+    loop_var: cau_ssh_key

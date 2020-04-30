@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  vars:
+    users:
+      - {u: usr1, g: wheel}
+      - {u: usr2, g: root}
+  tasks:
+    - user:
+        name: "{{ usr.u }}"
+        state: present
+        groups: "{{ usr.g }}"
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: usr

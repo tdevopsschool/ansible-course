@@ -1,0 +1,3 @@
+---
+- debug:
+    msg: role_a={{ msg }}

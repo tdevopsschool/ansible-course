@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  tasks:
+  - include_tasks: msgs.yml
+    vars:
+      messages:
+        - 1
+        - 2

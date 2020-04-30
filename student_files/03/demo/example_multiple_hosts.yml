@@ -1,0 +1,31 @@
+---
+# to run use the following command:
+#
+#   ansible-playbook -i hosts.ini -c local example.yml
+#
+- name: demo playbook
+  hosts: all
+  tasks:
+    - name: set var with all hostnames
+      set_fact:
+        all_hosts: "{{ groups.all | map('extract', hostvars, ['inventory_hostname']) | join(', ') }}"
+
+    - name: show all_hosts
+      debug:
+        var: all_hosts
+
+    - name: Update /etc/hosts from inventory
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].inventory_hostname }}"
+        state: present
+      with_items: "{{ groups.all }}"
+
+    - name: Magic 8 ball for MUDs
+      debug:
+        msg: "{{ inventory_hostname }} choice: {{ item }}"
+      with_random_choice:
+        - "go through the door"
+        - "drink from the goblet"
+        - "press the red button"
+        - "do nothing"

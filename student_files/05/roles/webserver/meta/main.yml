@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: common
+    vars:
+      common__iptables_allowed_ports:
+        - protocol: tcp
+          port: 80

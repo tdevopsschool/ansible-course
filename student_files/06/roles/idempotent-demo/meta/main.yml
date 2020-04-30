@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  role_name: idempotent-demo
+  author: Lev Goncharov
+  description: Ansible role for installing common things and demo. Based on https://github.com/zloyplohoy/ansible_the_idempotent
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  galaxy_tags:
+    - centos
+
+  platforms:
+    - name: Centos
+      versions:
+        - 7.6

@@ -1,0 +1,53 @@
+---
+- name: variables example
+  hosts: localhost
+  vars:
+    foo: value
+    foo2: also ok
+    foo_qwe: also ok
+    a_string: string
+    a_boolean: true
+    a_number: 123
+    a_list_single_line: [a, b]
+    a_list_multiple_lines:
+      - a
+      - b
+    a_dict_single_line: {k1: 1, k2: 2}
+    a_dict_multiple_lines:
+      k1: 1
+      k2: 2
+    nested_dict_list_single_line: {k1: [a], k2: [b]}
+    nested_dict_list_multiple_lines:
+      k1:
+        - a
+        - b
+      k2:
+        - c
+        - d
+    nested_list_dict_multiple_lines:
+      - k1: 1
+        k2: 2
+      - k2: 2
+        k3: 3
+    nested_list_dict_single_line: [{k1: 1, k2: 2}, {k2: 2, k3: 3}]
+    value_from_dict_ok_1: "{{ a_dict_multiple_lines['k1'] }}"
+    value_from_dict_ok_2: "{{ a_dict_multiple_lines.k2 }}"
+    # get value from list 'a'
+    value_from_list_ok: "{{ a_list_multiple_lines[0] }}"
+    # but it just a string 'a_list_multiple_lines[0]' instead of 'a'
+    value_from_list_fail: a_list_multiple_lines[0]
+    value_from_dict_fail_1: a_dict_multiple_lines['k1']
+    value_from_dict_fail_2: a_dict_multiple_lines.k2
+  tasks:
+    - name: Print variable
+      debug:
+        var: a_dict_single_line
+    - name: Print message
+      debug:
+        msg: "Some message - {{ a_dict_single_line }}"
+    - name: Print message
+      debug:
+        msg: also ok - {{ a_dict_single_line }}
+#    - name: It fails
+#      debug:
+#        msg: {{ a_dict_single_line }}

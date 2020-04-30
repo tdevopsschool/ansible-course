@@ -1,0 +1,36 @@
+---
+
+- name: provision server
+  hosts: localhost
+  become: true
+  become_user: root
+  tasks:
+    - name: Software is installed
+      yum:
+        name:
+          - httpd
+          - git
+        state: present
+
+    - name: Repo is checked out
+      git:
+        repo: https://github.com/ultral/2048.git
+        dest: /var/www/html
+        force: true
+
+    - name: Access via HTTP is allowed
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 80
+        ctstate: NEW
+        jump: ACCEPT
+
+    - name: Httpd is started
+      systemd:
+        name: httpd
+        state: started
+
+    - name: Print message
+      debug:
+        msg: "Site locates at http://localhost:8080/"

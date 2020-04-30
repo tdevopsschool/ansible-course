@@ -1,0 +1,9 @@
+---
+
+- winmod:
+  register: example_win_module__res
+  when: ansible_os_family == "Windows"
+
+- debug:
+    var: game2048
+  when: example_win_module__res is defined

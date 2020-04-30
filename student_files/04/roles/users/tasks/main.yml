@@ -1,0 +1,34 @@
+---
+- name: sshusers group is created
+  group:
+    name: sshusers
+    state: present
+
+- name: create admin accounts
+  user:
+    name: "{{ users__loop_item.login }}"
+    groups: sshusers
+    shell: /bin/bash
+    update_password: always
+    password: "{{ users__loop_item.password_hash | default(users__default_password_hash) }}"
+  loop: "{{ users__super_admins }}"
+  loop_control:
+    loop_var: users__loop_item
+
+- name: super admins can sudo without password
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "{{ users__loop_item.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    validate: visudo -cf %s
+  loop: "{{ users__super_admins }}"
+  loop_control:
+    loop_var: users__loop_item
+
+- name: admins have access via pub key
+  authorized_key:
+    user: "{{ users__loop_item.login }}"
+    key: "{{ lookup('file', 'keys/{{ users__loop_item.login }}.pub') }}"
+  loop: "{{ users__super_admins }}"
+  loop_control:
+    loop_var: users__loop_item

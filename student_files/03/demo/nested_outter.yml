@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+    - include_tasks: nested_inner.yml
+      loop:
+        - 1
+        - 2
+      loop_control:
+        loop_var: outer_item

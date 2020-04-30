@@ -1,0 +1,19 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Example assertion
+      assert:
+        that: true
+
+    - name: Check that the /etc/sysconfig/iptables exists
+      stat:
+        path: /etc/sysconfig/iptables
+      register: iptables_config_exists
+
+    - name: Iptables configs presentd
+      assert:
+        that:
+          - iptables_config_exists.stat.exist

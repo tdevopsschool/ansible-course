@@ -1,0 +1,9 @@
+---
+users__default_password_hash:
+  "$6$NwI7op8FHR1VQta6$zuQXHtNtM/7SRQsf1./18WbBrHMq4mT88nWh67ThmlWcqyVX3FBTY9uj/07tR9ViDEvjg6/bh0y3mSjeDQYe3."
+users__super_admins:
+  - login: deploy
+    password_hash: "{{ users__default_password_hash }}"
+    email: dep@loy.me
+  - login: deploy2
+    email: dep@loy.com

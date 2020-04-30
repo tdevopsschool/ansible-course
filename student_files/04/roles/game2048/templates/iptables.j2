@@ -1,0 +1,49 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+# default rules
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# echo reply
+-A INPUT -m icmp -p icmp --icmp-type 0 -j ACCEPT
+
+# Destination Unreachable
+-A INPUT -m icmp -p icmp --icmp-type 3 -j ACCEPT
+
+# Echo
+-A INPUT -m icmp -p icmp --icmp-type 8 -j ACCEPT
+
+# Parameter Problem
+-A INPUT -m icmp -p icmp --icmp-type 12 -j ACCEPT
+
+# accept ssh
+-A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Iptables rules template
+{% if iptables_allowed_ports is defined %}
+{% for record in iptables_allowed_ports %}
+-A INPUT -m {{ record.protocol }} -p {{ record.protocol }} --dport {{ record.port }} -j ACCEPT
+{% endfor %}
+{% endif %}
+
+# accept all output requests
+-A OUTPUT -j ACCEPT
+
+# drop all input requests
+-A INPUT -j DROP
+
+# drop all forward requests
+-A FORWARD -j DROP
+
+COMMIT
+
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+COMMIT

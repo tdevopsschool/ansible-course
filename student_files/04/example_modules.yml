@@ -1,0 +1,21 @@
+---
+
+- hosts: localhost
+  roles:
+    - role: example_lin_modules
+  tasks:
+    - name: Execute custom bash module
+      bash_mod:
+      register: result_bash_mod
+
+    - debug:
+        var: result_bash_mod
+
+    - python_mod:
+      register: python_mod_result
+      when: ansible_distribution == 'CentOS'
+
+    - debug:
+        var: python_mod_result
+
+

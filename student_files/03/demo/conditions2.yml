@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  tasks:
+    - debug:
+        msg: "{{ ansible_distribution_version
+          is version('7.4', '>=') }}"

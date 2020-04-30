@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  tasks:
+    - name: show all the hosts in the inventory
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ groups['all'] }}"
+    - name: show all the hosts in the current play
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ ansible_play_batch }}"

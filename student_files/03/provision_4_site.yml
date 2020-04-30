@@ -1,0 +1,14 @@
+---
+- name: Checkout repo
+  git:
+    repo: https://github.com/ultral/2048.git
+    dest: /var/www/html
+    force: true
+    version: HEAD
+
+- name: Httpd is Started
+  systemd:
+    name: httpd
+    enabled: true
+    state: started
+    daemon_reload: true

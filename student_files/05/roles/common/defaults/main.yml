@@ -1,0 +1,6 @@
+---
+common__iptables_allowed_ports: ""
+common__game2048_software:
+  - iptables-services
+  - httpd
+  - git

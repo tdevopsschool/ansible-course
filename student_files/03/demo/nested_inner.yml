@@ -1,0 +1,8 @@
+---
+- debug:
+    msg: "outer={{ outer_item }} inner={{ inner_item }}"
+  loop:
+    - a
+    - b
+  loop_control:
+    loop_var: inner_item

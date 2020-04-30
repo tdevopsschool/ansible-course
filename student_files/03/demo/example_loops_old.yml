@@ -1,0 +1,17 @@
+---
+- name: Loop until example
+  shell: echo -n Z >> myfile.txt && cat myfile.txt
+  register: output
+  delay: 1
+  retries: 5
+  until: not output.stdout.find("ZZZ")
+
+- name: loop over hash
+  debug:
+    msg: "{{ item.key }} - {{ item.value }}"
+  with_dict: "{{ user }}"
+
+- name: loop over dict
+  debug:
+    msg: "{{ item.protocol }} - {{ item.port }}"
+  with_items: "{{ iptables_allowed_ports }}"

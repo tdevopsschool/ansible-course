@@ -1,0 +1,8 @@
+*~
+*.swp
+*.vagrant*
+*.retry
+*.vdi
+*.box
+*.pyc
+*.log

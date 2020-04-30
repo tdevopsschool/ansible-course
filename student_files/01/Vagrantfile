@@ -1,0 +1,24 @@
+Vagrant.configure('2') do |config|
+  # configure vagrant-proxyconf plugin
+  # If proxy is configured via ENV variables
+  # then we configure vagrant to use proxy
+  unless ENV['http_proxy'].nil?
+    config.proxy.enabled  = true
+    # set values from environmental variables
+    config.proxy.http     = ENV['http_proxy']
+    config.proxy.https    = ENV['http_proxy']
+    config.proxy.no_proxy = ENV['no_proxy']
+  end
+
+  config.vm.box = 'bento/centos-7.7'
+  config.vm.synced_folder './', '/vagrant', mount_options: ['dmode=775,fmode=644']
+  config.vm.network 'forwarded_port', guest: 80, host: 8080
+
+  # customisation for virtualbox
+  config.vm.provider 'virtualbox' do |box|
+    box.memory = 1024
+  end
+
+  # provision VM via bash
+  config.vm.provision 'shell', path: 'run_me.sh'
+end

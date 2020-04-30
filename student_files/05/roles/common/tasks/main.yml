@@ -1,0 +1,49 @@
+---
+- name: Check role input params
+  assert:
+    that:
+      - common__iptables_allowed_ports | length > 0
+    msg: iptables allowed ports are not set
+
+- name: Add deploy user
+  include_role:
+    name: create-admin-user
+  vars:
+    admin_name: deploy
+    admin_passwd:
+      "$6$NwI7op8FHR1VQta6$zuQXHtNtM/7SRQsf1./18WbBrHMq4mT88nWh67ThmlWcqyVX3FB\
+      TY9uj/07tR9ViDEvjg6/bh0y3mSjeDQYe3."
+    admin_ssh_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAzoiLzPyU68iWn2o8wXohxIZItIDmnjSzI\
+      Tq5CA/nTCXtVbwkYF+M27BUx4MKg/fR+SwVcyaivkFAvKFNnZ/+0O2UAe+v8ceaM4NKQyK4r\
+      hsfHdXQDuFLBz/cqJoY0GPz0leBSo2AfuY+sRxpFWA3Hssm+MZPT1GrWnNKDj2rsdWUdEbXg\
+      ZoQPww3x3XLwRB2UZ7MfBfgwEA8i3jsYz7WsEptawxq1pICaRpwKeMDLXBPxKwOk2V4VrmUi\
+      aUp+WQnABsYgL3LGJAwlyU23mUP9dQzQk5sC0vc7paWzdSWovjcFdbjflXjd3zJQYqWVsLdE\
+      XKTbO21mHY1HEFJUcUZ+Q=="
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YV\
+      r+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6I\
+      edplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2h\
+      MNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnD\
+      kbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYC\
+      zRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+    admin_groups: wheel,vagrant
+
+- name: essentials are installed
+  yum:
+    name: "{{ common__game2048_software }}"
+    state: present
+
+- name: iptables rules are installed
+  template:
+    src: "{{ common__iptables_item }}.j2"
+    dest: /etc/sysconfig/{{ common__iptables_item }}
+    force: true
+    validate: /sbin/{{ common__iptables_item }}-restore --test %s
+  loop:
+    - iptables
+    - ip6tables
+  loop_control:
+    loop_var: common__iptables_item
+  notify:
+    - common - reload iptables
+    - common - reload ip6tables

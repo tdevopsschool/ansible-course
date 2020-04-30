@@ -1,0 +1,13 @@
+---
+# ansible-playbook -i inventory.ini demo.yml
+# ansible-playbook -i inventory.yml demo.yml
+# INVENTORY_SRC=inventory.json ansible-playbook -i inventory_json.py demo.yml
+# ANSIBLE_INVENTORY_ENABLED=jsn ansible-playbook -i inventory.json demo.yml
+
+- hosts: all
+  tasks:
+    - debug:
+        msg: >-
+          {{ inventory_hostname }} -
+          {{ example_variable }} -
+          {{ host_specific_var }}

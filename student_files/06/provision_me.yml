@@ -1,0 +1,8 @@
+---
+
+- name: provision ansible dev vm
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+    - role: ultral.ansible_development

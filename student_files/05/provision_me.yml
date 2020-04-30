@@ -1,0 +1,11 @@
+---
+
+- name: provision ansible dev vm
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+    - role: webserver
+      vars:
+        webserver__git_src: https://github.com/ultral/2048.git
+    - role: ultral.ansible_development

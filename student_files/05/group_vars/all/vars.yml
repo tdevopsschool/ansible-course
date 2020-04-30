@@ -1,0 +1,2 @@
+---
+secret_password: "{{ vault_secret_password }}"

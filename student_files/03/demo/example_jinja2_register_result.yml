@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  tasks:
+    - shell: echo -n Z >> myfile.txt && cat myfile.txt
+      register: output
+      delay: 1
+      retries: 5
+      until: not output.stdout.find("ZZZ")

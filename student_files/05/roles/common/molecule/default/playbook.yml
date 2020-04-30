@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: common
+      vars:
+        common__iptables_allowed_ports:
+          - protocol: tcp
+            port: 443

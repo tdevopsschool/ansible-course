@@ -1,0 +1,23 @@
+---
+- assert:
+    that:
+      - webserver__git_src != ""
+    msg: GIT user source is not set
+
+- name: Checkout repo
+  git:
+    repo: "{{ webserver__git_src }}"
+    dest: /var/www/html
+    force: true
+    version: HEAD
+
+- name: Httpd is restarted
+  systemd:
+    name: httpd
+    enabled: true
+    state: started
+    daemon_reload: true
+
+- name: Print message
+  debug:
+    msg: "Site locates at http://localhost:8080/"

@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  vars:
+    user: John
+
+
+  tasks:
+    - debug:
+        msg: "{{ user | lower }}"

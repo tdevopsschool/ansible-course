@@ -1,0 +1,5 @@
+---
+- set_fact:
+    msg: role_b
+- debug:
+    msg: role_b={{ msg }}

@@ -1,0 +1,9 @@
+[Unit]
+
+[Service]
+Restart=no
+#ExecStart=/usr/bin/python2 /tmp/bin/workshop.py
+ExecStart=/usr/bin/python2 /tmp/bin/workshop.py run
+
+[Install]
+WantedBy=multi-user.target

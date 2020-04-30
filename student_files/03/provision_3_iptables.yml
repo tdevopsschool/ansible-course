@@ -1,0 +1,16 @@
+---
+- name: iptables rules are installed
+  template:
+    src: "{{ iptables_filename }}.j2"
+    dest: "/etc/sysconfig/{{ iptables_filename }}"
+    validate: "/sbin/{{ iptables_filename }}-restore --test %s"
+  register: iptables_rules_install_result
+  loop_control:
+    loop_var: iptables_filename
+  loop:
+    - iptables
+    - ip6tables
+
+- name: reload iptables
+  command: iptables-restore /etc/sysconfig/iptables
+  when: iptables_rules_install_result.changed

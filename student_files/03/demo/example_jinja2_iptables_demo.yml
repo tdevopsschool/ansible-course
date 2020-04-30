@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  vars:
+    ports:
+      - {p: 22, t: tcp}
+      - {p: 80, t: tcp}
+      - {p: 161, t: udp}
+      - {p: 443, t: tcp}
+    rules: |+
+      *filter
+      :INPUT ACCEPT [0:0]
+      :FORWARD ACCEPT [0:0]
+      :OUTPUT ACCEPT [0:0]
+      {% for r in ports %}
+      {% if r.t is defined and r.p is defined %}
+      -A INPUT -p {{r.t}} -d {{r.p}} -j ACCEPT
+      {% endif %}
+      {% endfor %}
+      COMMIT
+  tasks:
+    - copy:
+        dest: /etc/sysconfig/iptables
+        content: "{{ rules }}"
+        validate: /sbin/iptables-restore --test %s

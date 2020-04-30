@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  vars:
+    users:
+      - John
+      - USER
+  tasks:
+    - debug:
+        msg: "{{users | map('lower')|join(', ')  }}"

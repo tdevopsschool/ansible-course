@@ -1,0 +1,26 @@
+---
+- name: sshusers group is created
+  group:
+    name: "{{ sshgroup_name }}"
+    state: present
+
+- name: create admin accounts
+  user:
+    name: "{{ user['login'] }}"
+    groups: "{{ sshgroup_name }}"
+    shell: /bin/bash
+    update_password: always
+    password: "{{ user.password_hash }}"
+
+- name: super admins can sudo without password
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    validate: 'visudo -cf %s'
+
+- name: Set authorized key for deploy user
+  authorized_key:
+    user: "{{ user.login }}"
+    state: present
+    key: "{{ user.authorized_key }}"

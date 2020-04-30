@@ -1,0 +1,13 @@
+---
+# DEFAULT_PRIVATE_ROLE_VARS=false ansible-playbook -i inventory.yml demo.yml
+# DEFAULT_PRIVATE_ROLE_VARS=true  ansible-playbook -i inventory.yml demo.yml
+
+- hosts: localhost
+  vars:
+    msg: hello world
+  roles:
+    - role: role_a
+    - role: role_b
+  tasks:
+    - debug:
+        msg: play={{ msg }}

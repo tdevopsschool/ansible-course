@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  handlers:
+    - name: notify something
+      debug:
+        msg: notified!
+  tasks:
+    - debug:
+        msg: message 1
+      changed_when: true
+      notify:
+        - notify something
+    - debug:
+        msg: message 2
+    - debug:
+        msg: message 3
+      changed_when: true
+      notify:
+        - notify something
