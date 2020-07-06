@@ -44,7 +44,7 @@
       authorized_key:
         user: "{{ user.login }}"
         state: present
-        key: "{{ user.authorized_key }}"    
+        key: "{{ user.authorized_key }}"
 
     - name: Software are installed
       yum:
@@ -118,17 +118,24 @@
         path: /etc/ssl/certs/ansible.com.key
         size: 2048 
 
+# hasn't found an adequate way to check to avoid re-creating
+#    - openssl_certificate_info: # if file not exist return fail
+#        path: /etc/ssl/certs/ansible.com.csr
+#      register: result_csr
+
     - name: Generate a openssl_csr
       openssl_csr:
         path: /etc/ssl/certs/ansible.com.csr
         privatekey_path: /etc/ssl/certs/ansible.com.key
-    
+#      when: result_csr is failed
+
     - name: Generate selfsigned
       openssl_certificate:
         path: /etc/ssl/certs/ansible.com.csr
         privatekey_path: /etc/ssl/certs/ansible.com.key
         csr_path: /etc/ssl/certs/ansible.com.csr
         provider: selfsigned
+#      when: result_csr is failed    
 
     - name: Print message
       debug:
