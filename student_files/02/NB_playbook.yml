@@ -87,10 +87,9 @@
         state: present
         line: "snmp ALL=(ALL:ALL) NOPASSWD:ALL"
 
-    - name: by NBaranov ************* certificate creation
+    - name: by NBaranov ************* certificate creation - not ready yet
       openssl_certificate:
         path: /etc/ssl/test-ansible.crt
-#        privatekey_path: /etc/ssl/private/ansible.com.pem
         csr_path: /etc/ssl/test-ansible.csr
         provider: selfsigned
 
