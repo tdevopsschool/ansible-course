@@ -1,0 +1,1 @@
+/usr/bin/ansible-playbook add_apache.yml -connection=local

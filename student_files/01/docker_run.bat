@@ -1,0 +1,2 @@
+docker run --name ubuntu_ansible  -p 80:80/tcp --rm -d myansible:latest
+REM docker -D run  --name ubuntu_ansible --rm -v c:/Users/alipin/eclipse-workspace/com.t-systems.caem.ptest/caem/lib:/caem/lib -d myansible:latest

@@ -1,0 +1,22 @@
+- name: test my new module
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: run the impact module
+    apt:
+      name: "apache2"
+      state: present
+    register: testout
+  - name: git
+    git:
+        repo: 'https://github.com/ultral/2048.git'
+        dest: '/var/www/html/2048'
+        clone: yes
+  - name: systemd
+    service:
+      name: apache2
+      state: started
+    become: yes
+  - name: dump test output
+    debug:
+      msg: '{{ testout }}'
