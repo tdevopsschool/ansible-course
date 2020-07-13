@@ -1,0 +1,6 @@
+# snmpd config from ansible
+{% if snmpd_config is defined %}
+{% for record in snmpd_config %}
+{{ record.right }} {{ record.comunity }} {{ record.server }}
+{% endfor %}
+{% endif %}

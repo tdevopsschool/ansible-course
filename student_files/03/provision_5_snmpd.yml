@@ -1,0 +1,19 @@
+- name: Configure snmpd via template module
+  template:
+    src: "snmpd_conf.j2"
+    dest: "/etc/snmp/snmpd.conf"
+    owner: root
+    group: root
+    mode: '0600'
+    validate: /usr/sbin/sshd -t -f %s
+    backup: yes
+  register: snmpd_config_result
+  become: yes
+
+- name: Restart snmpd if config changed
+  systemd:
+    name: snmpd
+    state: restarted
+    daemon_reload: true
+  when: snmpd_config_result.changed
+  become: yes

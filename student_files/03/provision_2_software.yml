@@ -7,3 +7,10 @@
       - git
     state: present
   when: ansible_distribution == 'CentOS'
+- name: install snmpd
+  yum:
+    name:
+      - net-snmp 
+      - net-snmp-utils
+    state: present
+  when: ansible_distribution == 'CentOS'

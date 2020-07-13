@@ -38,6 +38,7 @@
         dest: /etc/sudoers
         state: present
         line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
+        validate: '/usr/sbin/visudo -cf %s'
 
     - name: Authorized key for {{ user.login }} user is presented
       authorized_key:
@@ -50,6 +51,8 @@
         name:
           - httpd
           - git
+          - net-snmp
+          - net-snmp-utils
         state: present
 
     - name: Repo is checked out
@@ -63,18 +66,76 @@
       iptables:
         chain: INPUT
         protocol: tcp
-        destination_port: 80
+        destination_port: "80"
         ctstate: NEW
         syn: match
         jump: ACCEPT
         comment: Accept new http connections.
+  
+    - name: Allow snmp port 161
+      iptables:
+        chain: INPUT
+        protocol: udp
+        destination_port: "161"
+        ctstate: NEW
+        jump: ACCEPT
+        comment: Accept new snmp udp package.
 
-    - name: Httpd is restarted
+    - name: Snmpd is started and enabled
+      systemd:
+        name: snmpd
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: Copy a new "snmpd.conf file into /etc/snmpd/snmpd.conf
+      copy:
+        src: /vagrant/snmpd.conf
+        dest: /etc/snmp/snmpd.conf
+        owner: root
+        group: root
+        mode: '0600'
+        force: yes
+        backup: yes
+      register: snmpdconf
+  
+    - name: Snmpd is started and enabled
+      systemd:
+        name: snmpd
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: Httpd is started
       systemd:
         name: httpd
         enabled: true
-        state: restarted
+        state: started
         daemon_reload: true
+
+    - name: Generate a prived key 
+      openssl_privatekey:
+        path: /etc/ssl/certs/ansible.com.key
+        size: 2048 
+
+# hasn't found an adequate way to check to avoid re-creating
+#    - openssl_certificate_info: # if file not exist return fail
+#        path: /etc/ssl/certs/ansible.com.csr
+#      register: result_csr
+
+    - name: Generate a openssl_csr
+      openssl_csr:
+        path: /etc/ssl/certs/ansible.com.csr
+        privatekey_path: /etc/ssl/certs/ansible.com.key
+#      when: result_csr is failed
+
+    - name: Generate selfsigned
+      openssl_certificate:
+        path: /etc/ssl/certs/ansible.com.csr
+        privatekey_path: /etc/ssl/certs/ansible.com.key
+        csr_path: /etc/ssl/certs/ansible.com.csr
+        provider: selfsigned
+#      when: result_csr is failed    
 
     - name: Print message
       debug:
