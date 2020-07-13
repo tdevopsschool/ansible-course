@@ -12,5 +12,7 @@
     - ip6tables
 
 - name: reload iptables
-  command: iptables-restore /etc/sysconfig/iptables
-  when: iptables_rules_install_result.changed
+  command: "{{ item.iptables_filename }}-restore /etc/sysconfig/{{ item.iptables_filename }}" 
+  with_items: "{{ iptables_rules_install_result.results }}"
+  when: item.changed
+  become: yes 
