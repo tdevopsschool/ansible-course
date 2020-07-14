@@ -1,0 +1,29 @@
+---
+
+- name: provision server
+  hosts: all
+  become: true
+  become_user: root
+  vars:
+    - snmpd_packages:
+      - net-snmp
+      - net-snmp-utils
+  roles:
+    - role: game2048
+      vars:
+        iptables_allowed_ports:
+          - {protocol: tcp, port: 80}
+          - {protocol: tcp, port: 443}
+          - {protocol: udp, port: 161}
+    - role: users
+
+    # added by NBaranov
+    - role: snmpd_role
+    - role: iptables_role
+
+        # use filter
+- debug:
+    msg: "{{ admins | users_without_hash }}"
+
+
+  

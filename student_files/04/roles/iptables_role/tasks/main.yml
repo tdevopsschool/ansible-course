@@ -1,0 +1,19 @@
+---
+- name: ports configure
+  iptables:
+    chain: INPUT
+    protocol: "{{ snmp_port.protocol }}"
+    destination_port: "{{ snmp_port.port }}"
+    jump: ACCEPT
+  register: port_change_result  
+  loop: "{{ iptables_port_list }}"
+  loop_control:
+    loop_var: snmp_port
+
+- name: Execute iptables test bash module
+  iptables_reload_module:
+  register: result_of_reload
+  when: port_change_result.changed
+  
+- debug:
+    var: result_of_reload

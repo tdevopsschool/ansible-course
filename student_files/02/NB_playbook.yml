@@ -1,6 +1,6 @@
 ---
 
-- name: provision server
+- name: lesson 2  - homework 
   hosts: all
   become: true
   become_user: root
@@ -49,25 +49,60 @@
       yum:
         name:
           - httpd
-          - git
+          - git          
         state: present
 
-    - name: Repo is checked out
-      git:
-        repo: https://github.com/ultral/2048.git
-        dest: /var/www/html
-        force: true
-        version: HEAD
+    - name: by NBaranov ************* snmp daemon installation 
+      yum:
+        name:
+          - net-snmp
+          - net-snmp-utils
+        state: present
+
+    - name: by NBaranov *************  snmpd daemon configuration 
+      copy:
+        dest: /etc/snmp/snmpd.conf
+        content: |
+          syslocation Server Room
+          syscontact SysAdmin (devops@example.com)
+          rocommunity snmp_secret_rocommunity
+
+    - name: by NBaranov *************  snmp port opening
+      iptables:
+        chain: INPUT
+        protocol: udp
+        destination_port: 161
+        jump: ACCEPT
+
+    - name: by NBaranov *************   snmpd daemon starting
+      systemd:
+        name: snmpd
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: by NBaranov ************* validation sudo file
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        line: "snmp ALL=(ALL:ALL) NOPASSWD:ALL"
+
+    - name: by NBaranov ************* certificate creation - not ready yet
+      openssl_certificate:
+        path: /etc/ssl/test-ansible.crt
+        csr_path: /etc/ssl/test-ansible.csr
+        provider: selfsigned
+
 
     - name: Access via HTTP is allowed
       iptables:
         chain: INPUT
         protocol: tcp
-        destination_port: 80
+        destination_port: '80'
         ctstate: NEW
         syn: match
         jump: ACCEPT
-        comment: Accept new http connections.
+        comment: Accept new http   connections.
 
     - name: Httpd is restarted
       systemd:
