@@ -45,3 +45,7 @@
     - debug:
         msg: "{{ admins | users_without_email }}"
 
+    # use filter from NBaranov
+    - debug:
+        msg: "{{ admins | users_without_hash }}"
+

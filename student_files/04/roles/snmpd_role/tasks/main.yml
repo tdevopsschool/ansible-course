@@ -1,0 +1,5 @@
+---
+- name: Installation snmpd
+  yum:
+    name: "{{ snmpd_packages }}"
+    state: present

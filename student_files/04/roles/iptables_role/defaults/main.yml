@@ -1,0 +1,4 @@
+---
+iptables_port_list:
+  - {protocol: tcp, port: 80}
+  - {protocol: udp, port: 161}

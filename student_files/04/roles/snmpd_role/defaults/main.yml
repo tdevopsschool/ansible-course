@@ -1,0 +1,4 @@
+---
+snmpd_packages:
+  - net-snmp
+  - net-snmp-utils
