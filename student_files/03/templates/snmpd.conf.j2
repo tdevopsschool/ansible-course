@@ -1,0 +1,16 @@
+###############################################################################
+# System contact information
+#
+
+# It is also possible to set the sysContact and sysLocation system
+# variables through the snmpd.conf file:
+
+syslocation Unknown (edit /etc/snmp/snmpd.conf)
+syscontact Root <root@localhost> (configure /etc/snmp/snmp.local.conf)
+
+####
+# First, map the community name "public" into a "security name"
+
+#       sec.name  source          community
+com2sec notConfigUser  default       {{ community_string }}
+
