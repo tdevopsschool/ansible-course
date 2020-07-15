@@ -1,0 +1,52 @@
+---
+
+- name: server
+  hosts: localhost
+  become: true
+  become_user: root
+  vars:
+    source_folder: ./templates
+    dest_folder: /etc/snmp
+
+  tasks:
+    - name: Software is installed
+      yum:
+        name:
+          - net-snmp
+        state: present
+
+    - name: Access via 161 port
+      firewalld:
+        port: "{{ item.port }}"
+        permanent: yes
+        immediate: yes
+        state: enabled
+      with_items:
+        - { port: '161/tcp' }
+
+    - name: reload service firewalld
+      systemd:
+        name: firewalld
+        state: reloaded
+
+    - name: Enable snmpd service
+      service:
+        name: snmpd
+        state: enabled
+        notify: Restart snmpd
+
+    - name: Template snmpd.conf
+      template:
+        src: {{ source_folder }}/snmpd.j2
+        dest: {{ dest_folder }}/snmpd.conf
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+        
+  handlers:
+    - name: Restart snmpd
+      action:
+        service:
+          name: snmpd
+          state: restarted
