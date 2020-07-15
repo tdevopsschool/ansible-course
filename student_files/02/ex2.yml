@@ -5,8 +5,8 @@
   become: true
   become_user: root
   vars:
-    source_folder: ./templates
-    dest_folder: /etc/snmp
+    source_file: /home/it/ansible/Learning/ansible-course/student_files/02/templates/snmpd.j2
+    dest_file: /etc/snmp/snmpd.conf
 
   tasks:
     - name: Software is installed
@@ -37,13 +37,13 @@
 
     - name: Template snmpd.conf
       template:
-        src: {{ source_folder }}/snmpd.j2
-        dest: {{ dest_folder }}/snmpd.conf
+        src: {{ source_folder }}
+        dest: {{ dest_folder }}
         owner: root
         group: root
         mode: 0644
         backup: yes
-        
+
   handlers:
     - name: Restart snmpd
       action:
