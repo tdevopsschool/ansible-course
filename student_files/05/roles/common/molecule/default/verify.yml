@@ -16,4 +16,4 @@
     - name: Iptables configs presentd
       assert:
         that:
-          - iptables_config_exists.stat.exist
+          - iptables_config_exists.stat.exists
