@@ -37,8 +37,8 @@
 
     - name: Template snmpd.conf
       template:
-        src: {{ source_folder }}
-        dest: {{ dest_folder }}
+        src: {{ source_file }}
+        dest: {{ dest_file }}
         owner: root
         group: root
         mode: 0644
