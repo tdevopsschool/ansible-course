@@ -38,7 +38,7 @@ For doing homework you should have:
   * git client(i.e. [sourcetreeapp](https://www.sourcetreeapp.com/))
   * [vagrant](https://www.vagrantup.com)
 
-Also, it makes sens to configure your text editor [i.e. how to configure vscode](https://www.goncharov.xyz/it/vscode.html)
+Also, it makes sens to configure your text editor i.e. [how to configure vscode](http://www.goncharov.xyz/it/vscode.html)
 
 ## Links
 
