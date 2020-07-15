@@ -39,3 +39,12 @@ For doing homework you should have:
   * [vagrant](https://www.vagrantup.com)
 
 Also, it makes sens to configure your text editor i.e. [how to configure vscode](http://www.goncharov.xyz/it/vscode.html)
+
+## Links
+
+* [How to test Ansible and don’t go nuts](https://www.goncharov.xyz/it/ansible-testing-en.html)
+* [Ansible: CoreOS to CentOS, 18 months long journey](https://www.goncharov.xyz/it/coreos2centos-en.html)
+* [How to configure vscode for using Ansible](https://www.goncharov.xyz/it/vscode.html)
+* [Awesome IaC testing list](https://github.com/ultral/awesome-iac-testing)
+* [t.me/pro_ansible](https://t.me/pro_ansible)
+* [t.me/ansible_dev](https://t.me/ansible_dev)
