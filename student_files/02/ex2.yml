@@ -29,15 +29,15 @@
         state: reloaded
 
     - name: Enable snmpd service
-      service:
+      systemd:
         name: snmpd
-        state: enabled
-        notify: Restart snmpd
+        enabled: yes
+        state: started
 
     - name: Template snmpd.conf
       template:
-        src: {{ source_file }}
-        dest: {{ dest_file }}
+        src: "{{ source_file }}"
+        dest: "{{ dest_file }}"
         owner: root
         group: root
         mode: 0644
@@ -45,7 +45,4 @@
 
   handlers:
     - name: Restart snmpd
-      action:
-        service:
-          name: snmpd
-          state: restarted
+      service: name=snmpd state=restarted
