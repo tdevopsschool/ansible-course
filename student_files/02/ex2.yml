@@ -4,6 +4,9 @@
   hosts: localhost
   become: true
   become_user: root
+  vars:
+    source_file: /home/it/ansible/Learning/ansible-course/student_files/02/templates/snmpd.j2
+    dest_file: /etc/snmp/snmpd.conf
   tasks:
     - name: Software is installed
       yum:
@@ -39,9 +42,6 @@
         group: root
         mode: 0644
         backup: yes
-      vars:
-        source_file: /home/it/ansible/Learning/ansible-course/student_files/02/templates/snmpd.j2
-        dest_file: /etc/snmp/snmpd.conf
 
   handlers:
     - name: Restart snmpd
