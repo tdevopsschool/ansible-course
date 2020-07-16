@@ -19,13 +19,26 @@
         force: true
 
     - name: Access via HTTP is allowed
-      iptables:
-        chain: INPUT
-        protocol: tcp
-        destination_port: 80
-        ctstate: NEW
-        jump: ACCEPT
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        
+    - name: Access via 8080 port and 80 port
+      firewalld:
+        port: "{{ item.port }}"
+        permanent: yes
+        immediate: yes
+        state: enabled
+      with_items:
+        - { port: '8080/tcp' }
+        - { port: '80/tcp' }
 
+    - name: reload service firewalld
+      systemd:
+        name: firewalld
+        state: reloaded
+        
     - name: Httpd is started
       systemd:
         name: httpd
