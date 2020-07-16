@@ -7,11 +7,14 @@
   vars:
     source_file: /home/it/ansible/Learning/ansible-course/student_files/02/templates/snmpd.j2
     dest_file: /etc/snmp/snmpd.conf
+    sourcesrv_file: /home/it/ansible/Learning/ansible-course/student_files/02/templates/snmpdsrv.j2
+    destsrv_file: /lib/systemd/system/snmpd.service
   tasks:
     - name: Software is installed
       yum:
         name:
           - net-snmp
+          - net-snmp-utils
         state: present
 
     - name: Access via 161 port
@@ -21,18 +24,12 @@
         immediate: yes
         state: enabled
       with_items:
-        - { port: '161/tcp' }
+        - { port: '161/udp' }
 
     - name: reload service firewalld
       systemd:
         name: firewalld
         state: reloaded
-
-    - name: Enable snmpd service
-      systemd:
-        name: snmpd
-        enabled: yes
-        state: started
 
     - name: Template snmpd.conf
       template:
@@ -42,6 +39,21 @@
         group: root
         mode: 0644
         backup: yes
+
+    - name: Template snmpd.service
+      template:
+        src: "{{ sourcesrv_file }}"
+        dest: "{{ destsrv_file }}"
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+
+    - name: Enable snmpd service
+      systemd:
+        name: snmpd
+        enabled: yes
+        state: started
 
   handlers:
     - name: Restart snmpd
