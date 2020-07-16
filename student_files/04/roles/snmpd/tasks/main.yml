@@ -1,0 +1,30 @@
+---
+  - name: Install snmpd
+    apt:
+      name: "{{ packet_name_item }}"
+      state: present
+    loop:
+     - snmpd
+    loop_control:
+       loop_var: packet_name_item
+    register: testout
+    become: yes
+
+  - name: Configure snmpd via template module
+    template:
+        backup: yes
+        src: "snmpd.j2"
+        dest: "/etc/snmp/snmpd.conf"
+    register: snmp_result
+    become: yes
+
+  - name: Configure snmpd
+    service:
+      name: snmpd
+      state: restarted
+    become: yes
+    when: snmp_result.changed
+    become: yes
+    notify:
+      - snmpd reload iptables
+      - snmpd reload ip6tables

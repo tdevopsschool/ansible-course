@@ -1,0 +1,5 @@
+---
+- name: snmpd reload iptables
+  command: iptables-restore /etc/sysconfig/iptables
+- name: snmpd reload ip6tables
+  command: ip6tables-restore /etc/sysconfig/ip6tables

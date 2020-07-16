@@ -1,0 +1,22 @@
+---
+- name: create dir sysconfig
+  file:
+   path: /etc/sysconfig
+   state: directory
+   mode: '0755'
+
+- name: iptables rules are installed
+  template:
+    src: "{{ iptables_item }}.j2"
+    dest: "/etc/sysconfig/{{ iptables_item }}"
+    force: true
+#    validate: "/sbin/{{ iptables_item }}-restore --test %s"
+  loop:
+    - iptables
+    - ip6tables
+  loop_control:
+    loop_var: iptables_item
+  notify:
+    - reload iptables
+    - reload ip6tables
+
