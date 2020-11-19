@@ -1,0 +1,37 @@
+---
+- name: ansible dev vm
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+    - role: ultral.ansible_development
+  post_tasks:
+    - name: Install extra software
+      package:
+        name:
+          - git
+          - epel-release
+        state: present
+      retries: 30
+      delay: 5
+      register: result
+      until: result is not failed
+    - name: Set kernel parameters
+      # https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc
+      sysctl:
+        name: fs.inotify.max_user_watches
+        value: 524288
+        sysctl_file: /etc/sysctl.d/99-vscode.conf
+    - name: Install linters
+      yum:
+        name:
+          - ShellCheck.x86_64
+      retries: 30
+      delay: 5
+      register: result
+      until: result is not failed
+    - name: Add vagrant user to the docker group
+      user:
+        name: vagrant
+        group: docker
+        append: true
