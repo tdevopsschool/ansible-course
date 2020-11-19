@@ -15,12 +15,6 @@
 * [virtualbox](https://www.virtualbox.org/wiki/Downloads)
 * [vagrant](https://www.vagrantup.com/)
 
-#### Prepare vagrant if you use proxy
-
-```bash
-vagrant plugin install vagrant-proxyconf
-```
-
 ### Set up VM
 
 ```bash
