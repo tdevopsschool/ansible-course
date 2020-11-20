@@ -1,9 +1,5 @@
-name: Test Homework
-on:
-  pull_request:
-  push:
-    branches:
-      - master
+name: Test Homework 05
+on: [push, pull_request]
 
 jobs:
   molecule:
