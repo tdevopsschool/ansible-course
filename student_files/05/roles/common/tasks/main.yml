@@ -7,16 +7,12 @@
   delay: 5
   register: result
   until: result is not failed
-- name: Add the ip6_tables module
-  modprobe:
-    name: ip6_tables
-    state: present
 - name: Configure iptables
   template:
     src: "{{ common__iptables_item }}.j2"
     dest: /etc/sysconfig/{{ common__iptables_item }}
     force: true
-    validate: /sbin/{{ common__iptables_item }}-restore --test %s
+    # validate: /sbin/{{ common__iptables_item }}-restore --test %s
     mode: 0644
     owner: root
     group: root
