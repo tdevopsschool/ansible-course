@@ -4,7 +4,9 @@
     src: "{{ game2048__iptables_item }}.j2"
     dest: "/etc/sysconfig/{{ game2048__iptables_item }}"
     force: true
-    validate: "/sbin/{{ game2048__iptables_item }}-restore --test %s"
+    # it's commented because github actions do not allow use ip6
+    # https://github.com/actions/virtual-environments/issues/668
+    # validate: "/sbin/{{ game2048__iptables_item }}-restore --test %s"
     mode: 0644
     owner: root
     group: root

@@ -1,0 +1,114 @@
+name: Test Homework
+on: [push, pull_request]
+
+jobs:
+  Lesson 01:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Lesson 01
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/01"
+  Lesson 02:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Lesson 02
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/02"
+  Lesson 03:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Lesson 03
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/03"
+  Lesson 04:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Lesson 04 - role users
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/04/roles/users"
+      - name: Lesson 04 - role game2048
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/04/roles/users"
+      - name: Lesson 04 - playbook
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/04"
+  Lesson 05:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Lesson 05 - role common
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/05/roles/common"
+      - name: Lesson 05 - role game2048
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/05/roles/game2048"
+      - name: Lesson 05 - role users
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/05/roles/users"
+      - name: Lesson 05 - playbook
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/05"
