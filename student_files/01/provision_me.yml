@@ -6,7 +6,8 @@
   become_user: root
   tasks:
     - name: debug ip6 module
-      var: hostvars
+      deubg:
+        var: hostvars
     - name: Install software
       package:
         name:
