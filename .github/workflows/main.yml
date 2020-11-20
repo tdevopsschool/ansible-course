@@ -1,0 +1,20 @@
+name: Test Homework
+on: [push, pull_request]
+
+jobs:
+  molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Lesson 01
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_working_dir: "${{ github.repository }}/student_files/01"

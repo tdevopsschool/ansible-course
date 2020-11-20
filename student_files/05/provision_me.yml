@@ -4,8 +4,7 @@
   hosts: all
   become: true
   become_user: root
+  vars:
+    webserver__git_src: https://github.com/ultral/2048.git
   roles:
     - role: webserver
-      vars:
-        webserver__git_src: https://github.com/ultral/2048.git
-    - role: ultral.ansible_development
