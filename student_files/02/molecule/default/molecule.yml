@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint *yml
+platforms:
+  - name: instance
+    image: ultral/docker_centos_ansible_tests:latest
+    pre_build_image: true
+    privileged: true
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    exposed_ports:
+      - 80/tcp
+    network_mode: host
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: ../../provision_me.yml
+scenario:
+  name: default
+verifier:
+  name: ansible
+  lint:
+    name: ansible-lint
