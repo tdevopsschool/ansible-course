@@ -2,8 +2,8 @@
 - name: game2048 reload iptables
   command: iptables-restore /etc/sysconfig/iptables
   when:
-    - ansible_virtualization_type != "docker"
+    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "podman"
 - name: game2048 reload ip6tables
   command: ip6tables-restore /etc/sysconfig/ip6tables
   when:
-    - ansible_virtualization_type != "docker"
+    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "podman"

@@ -21,4 +21,4 @@
   command: iptables-restore /etc/sysconfig/iptables
   when:
     - iptables_rules_install_result.changed
-    - ansible_virtualization_type != "docker"
+    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "podman"
