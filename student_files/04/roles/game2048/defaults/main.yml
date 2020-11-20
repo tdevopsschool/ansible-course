@@ -1,6 +1,7 @@
 ---
 game2048__software:
   - iptables
+  - iptables-services
   - httpd
   - git
 
