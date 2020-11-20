@@ -1,9 +1,12 @@
 ---
-- name: iptables rules are installed
+- name: Configure iptables
   template:
     src: "{{ iptables_filename }}.j2"
     dest: "/etc/sysconfig/{{ iptables_filename }}"
     validate: "/sbin/{{ iptables_filename }}-restore --test %s"
+    mode: 0644
+    owner: root
+    group: root
   register: iptables_rules_install_result
   loop_control:
     loop_var: iptables_filename
@@ -11,6 +14,11 @@
     - iptables
     - ip6tables
 
-- name: reload iptables
+- name: Reload iptables
+  # ansible lint complains about reloading, so we disable that warning
+  # noqa 503
+  # also  iptables-restore doesn't work inside docker, so we skip the step
   command: iptables-restore /etc/sysconfig/iptables
-  when: iptables_rules_install_result.changed
+  when:
+    - iptables_rules_install_result.changed
+    - ansible_virtualization_type != "docker"

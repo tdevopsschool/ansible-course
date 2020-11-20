@@ -1,13 +1,14 @@
 ---
 
-- name: provision server
+- name: Install 2048
   hosts: all
   become: true
   become_user: root
   vars:
-    sshgroup_name: sshusers
     iptables_allowed_ports:
-      - {protocol: tcp, port: 80}
+      - {protocol: tcp, port: 180}
+      - {protocol: tcp, port: 1443}
+      - {protocol: udp, port: 1161}
     user:
       login: deploy
       password_hash:
@@ -21,16 +22,14 @@
         jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE9\
         8OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
   tasks:
-    - import_tasks: provision_1_users.yml
-    - import_tasks: provision_2_software.yml
-    - name: Apply iptables settings and override defult variable value
+    - name: Create admin user
+      import_tasks: provision_1_users.yml
+    - name: Install software
+      import_tasks: provision_2_software.yml
+    - name: Configure iptables
       import_tasks: provision_3_iptables.yml
-      vars:
-        iptables_allowed_ports:
-          - {protocol: tcp, port: 180}
-          - {protocol: tcp, port: 1443}
-          - {protocol: udp, port: 1161}
-    - import_tasks: provision_4_site.yml
+    - name: Install game 2048`
+      import_tasks: provision_4_site.yml
     - name: Print message
       debug:
-        msg: "Site locates at http://localhost:8080/"
+        msg: "Play 2028: http://localhost:8080/"

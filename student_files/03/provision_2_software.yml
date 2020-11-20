@@ -1,9 +1,20 @@
 ---
-- name: install httpd
-  yum:
+- name: Install common software
+  package:
+    name:
+      - git
+      # it's required for validating iptables configs
+      - iptables
+    state: present
+- name: Install software Centos
+  package:
     name:
       - httpd
-      - iptables-services
-      - git
     state: present
   when: ansible_distribution == 'CentOS'
+- name: Install software Ubuntu
+  package:
+    name:
+      - apache2
+    state: present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

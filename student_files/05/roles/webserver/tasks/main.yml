@@ -2,7 +2,7 @@
 - assert:
     that:
       - webserver__git_src != ""
-    msg: GIT user source is not set
+    msg: GIT source is not set
 
 - name: Checkout repo
   git:
