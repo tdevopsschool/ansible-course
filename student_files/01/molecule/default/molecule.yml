@@ -26,7 +26,7 @@ provisioner:
   lint:
     name: ansible-lint
   playbooks:
-    converge: ../../run_me.yml
+    converge: ../../provision_me.yml
 scenario:
   name: default
 verifier:
