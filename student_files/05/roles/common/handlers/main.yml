@@ -3,8 +3,10 @@
 - name: common - reload iptables
   command: iptables-restore /etc/sysconfig/iptables
   when:
-    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "podman"
+    # should be removed after releasing https://github.com/ansible/ansible/issues/66304
+    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "VirtualPC"
 - name: common - reload ip6tables
   command: ip6tables-restore /etc/sysconfig/ip6tables
   when:
-    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "podman"
+    # should be removed after releasing https://github.com/ansible/ansible/issues/66304
+    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "VirtualPC"
