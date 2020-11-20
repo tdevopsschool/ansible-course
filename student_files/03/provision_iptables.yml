@@ -22,4 +22,5 @@
   when:
     - iptables_rules_install_result.changed
     # should be removed after releasing https://github.com/ansible/ansible/issues/66304
-    - ansible_virtualization_type != "docker" or ansible_virtualization_type != "VirtualPC"
+    - ansible_virtualization_type != "docker"
+    - ansible_virtualization_type != "VirtualPC"
