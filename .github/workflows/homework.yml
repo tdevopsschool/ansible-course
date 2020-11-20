@@ -19,7 +19,7 @@ jobs:
         with:
           molecule_options: --debug
           molecule_working_dir: "${{ github.repository }}/student_files/01"
-  Lesson 02:
+  Lesson_02:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
