@@ -28,4 +28,19 @@ jobs:
         uses: gofrolist/molecule-action@v2
         with:
           molecule_options: --debug
-          molecule_working_dir: "${{ github.repository }}/student_files/02"
+          molecule_working_dir: "${{ github.repository }}/student_files/03"
+      - name: Lesson 04 - playbook
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/04"
+      - name: Lesson 04 - role users
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/04/roles/users"
+      - name: Lesson 04 - role game2048
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/04/roles/users"

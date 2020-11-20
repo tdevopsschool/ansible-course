@@ -1,5 +1,4 @@
 ---
-
 - hosts: localhost
   roles:
     - role: example_plugins
@@ -12,10 +11,11 @@
         email: dep@loy.com
       - login: login4
   tasks:
-    - debug:
+    - name: print all acounts as is
+      debug:
         msg: "{{ admins }}"
-    # print all acounts without email
-    - debug:
+    - name: print all acounts without email
+      debug:
         msg:
           "{% set out_list = [] %}\
           {% for user in admins %}\
@@ -24,24 +24,20 @@
           {% endif %}\
           {% endfor %}\
           {{ out_list }}"
-
-    # use standard jinja2 filters
-    - debug:
+    - name: print all acounts without email via standard jinja2 filters
+      debug:
         msg: >-
           {{ admins |
             selectattr('email', 'undefined') |
             map(attribute='login') |
             list }}
-
-    # use test plugin
-    - debug:
+    - name: print all acounts without email via custom test plugin
+      debug:
         msg: >-
           {{ admins |
             select('has_email') |
             map(attribute='login') |
             list }}
-
-    # use filter
-    - debug:
+    - name: print all acounts without email via custom filter
+      debug:
         msg: "{{ admins | users_without_email }}"
-

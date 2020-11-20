@@ -1,0 +1,23 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check httpd port availiable
+      wait_for:
+        host: "127.0.0.1"
+        port: 80
+        delay: 5
+      retries: 30
+      delay: 5
+
+    - name: Check http request
+      uri:
+        url: http://127.0.0.1:80/
+        method: GET
+        status_code: 200
+      register: uri_result
+      until: uri_result is not failed
+      retries: 30
+      delay: 5

@@ -24,7 +24,7 @@
         shell: /bin/bash
         update_password: always
         password: "{{ user.password_hash }}"
-    - name: Admin {{ user.login }} can sudo without password
+    - name: Add admin to sudoers
       lineinfile:
         dest: /etc/sudoers
         state: present

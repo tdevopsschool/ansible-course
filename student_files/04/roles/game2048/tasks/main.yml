@@ -1,38 +1,10 @@
 ---
-- name: Required software are installed
-  yum:
-    name: "{{ game2048__software }}"
-    state: present
-
-- name: iptables rules are installed
-  template:
-    src: "{{ game2048__iptables_item }}.j2"
-    dest: "/etc/sysconfig/{{ game2048__iptables_item }}"
-    force: true
-    validate: "/sbin/{{ game2048__iptables_item }}-restore --test %s"
-  loop:
-    - iptables
-    - ip6tables
-  loop_control:
-    loop_var: game2048__iptables_item
-  notify:
-    - game2048 reload iptables
-    - game2048 reload ip6tables
-
-- name: Repo is checked out
-  git:
-    repo: https://github.com/ultral/2048.git
-    dest: /var/www/html
-    force: true
-    version: HEAD
-
-- name: Httpd is started
-  systemd:
-    name: httpd
-    enabled: true
-    state: started
-    daemon_reload: true
-
+- name: Install software
+  import_tasks: provision_software.yml
+- name: Configure iptables
+  import_tasks: provision_iptables.yml
+- name: Install game 2048
+  import_tasks: provision_site.yml
 - name: Print message
   debug:
-    msg: "Site locates at http://localhost:8080/"
+    msg: "Play 2028: http://localhost:8080/"

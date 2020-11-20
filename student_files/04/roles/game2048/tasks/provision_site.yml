@@ -1,0 +1,14 @@
+---
+- name: Checkout git repository
+  git:
+    repo: https://github.com/ultral/2048.git
+    dest: /var/www/html
+    force: true
+    version: fc1ef4fe5a5fcccea7590f3e4c187c75980b353f
+- name: Start and enable httpd
+  systemd:
+    name: httpd
+    enabled: true
+    state: started
+    daemon_reload: true
+  when: ansible_distribution == 'CentOS'

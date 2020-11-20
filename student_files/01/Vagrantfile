@@ -20,5 +20,5 @@ Vagrant.configure('2') do |config|
   end
 
   # provision VM via bash
-  config.vm.provision 'shell', path: 'run_me.sh'
+  config.vm.provision 'shell', path: 'provision_me.sh'
 end

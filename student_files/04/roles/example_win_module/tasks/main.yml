@@ -1,9 +1,10 @@
 ---
 
-- winmod:
+- name: Execute custom windows module
+  winmod:
   register: example_win_module__res
   when: ansible_os_family == "Windows"
-
-- debug:
-    var: game2048
+- name: Print custom windows module
+  debug:
+    var: example_win_module__res
   when: example_win_module__res is defined

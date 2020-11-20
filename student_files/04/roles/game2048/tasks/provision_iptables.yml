@@ -1,0 +1,18 @@
+---
+- name: Configure iptables
+  template:
+    src: "{{ game2048__iptables_item }}.j2"
+    dest: "/etc/sysconfig/{{ game2048__iptables_item }}"
+    force: true
+    validate: "/sbin/{{ game2048__iptables_item }}-restore --test %s"
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - iptables
+    - ip6tables
+  loop_control:
+    loop_var: game2048__iptables_item
+  notify:
+    - game2048 reload iptables
+    - game2048 reload ip6tables

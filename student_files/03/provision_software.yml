@@ -5,6 +5,7 @@
       - git
       # it's required for validating iptables configs
       - iptables
+      - iptables-services
     state: present
 - name: Install software Centos
   package:
