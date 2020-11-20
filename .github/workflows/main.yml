@@ -17,4 +17,10 @@ jobs:
       - name: Lesson 01
         uses: gofrolist/molecule-action@v2
         with:
+          molecule_options: --debug
           molecule_working_dir: "${{ github.repository }}/student_files/01"
+      - name: Lesson 02
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/student_files/02"
