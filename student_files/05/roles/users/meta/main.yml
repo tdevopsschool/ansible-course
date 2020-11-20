@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: common
+  role_name: filter_users_without_email
   author: Lev Goncharov
-  description: Ansible role for installing common things and demo
+  description: Create users wihtout emails
 
   license: MIT
 
@@ -15,3 +15,6 @@ galaxy_info:
     - name: Centos
       versions:
         - 7.6
+
+dependencies:
+  - role: filter_users_without_email

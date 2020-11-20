@@ -1,0 +1,26 @@
+---
+- name: check input values
+  assert:
+    that:
+      - game2048__git_src | length > 0
+      - game2048__git_dst | length > 0
+      - game2048__git_ref | length > 0
+    msg: GIT source is not set
+- name: Install software
+  package:
+    name: "{{ game2048__software }}"
+    state: present
+  retries: 30
+  delay: 5
+  register: result
+  until: result is not failed
+- name: Checkout git repository
+  git:
+    repo: "{{ game2048__git_src }}"
+    dest: "{{ game2048__git_dst }}"
+    force: true
+    version: "{{ game2048__git_ref }}"
+  retries: 30
+  delay: 5
+  register: result
+  until: result is not failed

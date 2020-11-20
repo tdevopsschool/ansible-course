@@ -4,7 +4,16 @@
   hosts: all
   become: true
   become_user: root
-  vars:
-    webserver__git_src: https://github.com/ultral/2048.git
+  pre_tasks:
+    - name: Print secret password
+      debug:
+        var: secret_password
   roles:
-    - role: webserver
+    - role: users
+    - role: common
+    - role: game2048
+  post_tasks:
+    - name: Print message
+      debug:
+        msg: "Play 2028: http://localhost:8080/"
+

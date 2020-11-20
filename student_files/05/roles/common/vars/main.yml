@@ -1,0 +1,4 @@
+---
+common__software:
+  - iptables
+  - httpd

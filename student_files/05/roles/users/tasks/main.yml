@@ -1,0 +1,27 @@
+---
+- name: Create admin accounts
+  user:
+    name: "{{ users__loop_item.login }}"
+    shell: /bin/bash
+    update_password: always
+    password: "{{ users__loop_item.password_hash | default(users__default_password_hash) }}"
+  loop: "{{ users__super_admins | users_without_email }}"
+  loop_control:
+    loop_var: users__loop_item
+- name: Add admins to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "{{ users__loop_item.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    validate: visudo -cf %s
+  loop: "{{ users__super_admins | users_without_email }}"
+  loop_control:
+    loop_var: users__loop_item
+- name: Create authorized key for admins
+  authorized_key:
+    user: "{{ users__loop_item.login }}"
+    # noqa 207
+    key: "{{ lookup('file', 'keys/{{ users__loop_item.login }}.pub') }}"
+  loop: "{{ users__super_admins | users_without_email }}"
+  loop_control:
+    loop_var: users__loop_item

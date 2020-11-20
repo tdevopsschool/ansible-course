@@ -2,10 +2,9 @@
 
 - name: common - reload iptables
   command: iptables-restore /etc/sysconfig/iptables
-  tags:
-    - notest
-
+  when:
+    - ansible_virtualization_type != "docker"
 - name: common - reload ip6tables
   command: ip6tables-restore /etc/sysconfig/ip6tables
-  tags:
-    - notest
+  when:
+    - ansible_virtualization_type != "docker"

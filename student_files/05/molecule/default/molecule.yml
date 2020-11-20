@@ -6,7 +6,7 @@ driver:
 lint: |
   set -e
   yamllint .
-  ansible-lint molecule/default/playbook.yml
+  ansible-lint *yml
 platforms:
   - name: instance
     image: ultral/docker_centos_ansible_tests:latest
@@ -18,10 +18,18 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    exposed_ports:
+      - 80/tcp
+    network_mode: host
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
+  playbooks:
+    converge: ../../provision_me.yml
+  config_options:
+    defaults:
+      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/ansible-vault.pass"
 scenario:
   name: default
 verifier:
