@@ -7,6 +7,15 @@ It is foundation for people who involved into infrastructure topics - devops eng
 
 _The course goal_ is to introduce Configuration Managament and Ansible.
 
+## Lessons ENG
+
+* [01. Configuration management](lessons/01.md)
+* `02. The first playbook`
+* `03. Base features`
+* `04. Roles and modules`
+* `05. Best practices`
+* `06. Usecases`
+
 ## Homework
 
 We The course consists of 6 lessons. Our goal is to provision a server and play the game 2048. Each homework goal is to get practical knoledge about related topics.
@@ -42,7 +51,7 @@ Also, it makes sens to configure your text editor i.e. [how to configure vscode]
 
 ## Links
 
-* [How to test Ansible and don’t go nuts](https://www.goncharov.xyz/it/ansible-testing-en.html)
+* [How to test Ansible and don't go nuts](https://www.goncharov.xyz/it/ansible-testing-en.html)
 * [Ansible: CoreOS to CentOS, 18 months long journey](https://www.goncharov.xyz/it/coreos2centos-en.html)
 * [How to configure vscode for using Ansible](https://www.goncharov.xyz/it/vscode.html)
 * [Awesome IaC testing list](https://github.com/ultral/awesome-iac-testing)
