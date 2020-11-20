@@ -7,6 +7,10 @@
   delay: 5
   register: result
   until: result is not failed
+- name: Add the ip6_tables module
+  modprobe:
+    name: ip6_tables
+    state: present
 - name: Configure iptables
   template:
     src: "{{ common__iptables_item }}.j2"

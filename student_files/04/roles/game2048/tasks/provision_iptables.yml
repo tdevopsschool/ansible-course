@@ -1,4 +1,8 @@
 ---
+- name: Add the ip6_tables module
+  modprobe:
+    name: ip6_tables
+    state: present
 - name: Configure iptables
   template:
     src: "{{ game2048__iptables_item }}.j2"

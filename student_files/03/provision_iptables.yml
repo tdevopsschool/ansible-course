@@ -1,4 +1,9 @@
 ---
+- name: Add the ip6_tables module
+  modprobe:
+    name: ip6_tables
+    state: present
+
 - name: Configure iptables
   template:
     src: "{{ iptables_filename }}.j2"
