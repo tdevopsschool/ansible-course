@@ -2,7 +2,7 @@
 
 ## Lessons ENG
 
-* [01. Configuration management](docs/01.md)
+* [01. Configuration management](01.md)
 * `02. The first playbook`
 * `03. Base features`
 * `04. Roles and modules`
