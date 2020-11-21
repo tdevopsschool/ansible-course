@@ -51,6 +51,7 @@ Also, it makes sens to configure your text editor i.e. [how to configure vscode]
 
 ## Links
 
+* [Для нас главное — это желание учиться и развиваться в DevOps» — преподаватели и менторы о том, как учат в DevOps-школе](https://habr.com/en/company/deutschetelekomitsolutions/blog/521648/)
 * [How to test Ansible and don't go nuts](https://www.goncharov.xyz/it/ansible-testing-en.html)
 * [Ansible: CoreOS to CentOS, 18 months long journey](https://www.goncharov.xyz/it/coreos2centos-en.html)
 * [How to configure vscode for using Ansible](https://www.goncharov.xyz/it/vscode.html)
