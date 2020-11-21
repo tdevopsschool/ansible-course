@@ -1,1 +1,4 @@
-theme: jekyll-theme-minimal
+theme: jekyll-theme-slate
+title: DevOps School
+description: DevOps School
+logo: assests/logo.png
