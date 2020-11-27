@@ -1,0 +1,5 @@
+- name: Print Users without hash
+  debug:
+    msg: User list {{ lookup('file', 'users.txt')  | users_without_hash }}
+#    with_sequence: start=0 end={{users|length -1}}
+  

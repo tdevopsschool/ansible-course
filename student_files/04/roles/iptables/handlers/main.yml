@@ -1,0 +1,8 @@
+---
+- name: reload iptables
+  module_iptables:
+  register: result_bash_mod
+
+- name: reload ip6tables
+  module_ip6tables:
+  register: result_bash_mod6

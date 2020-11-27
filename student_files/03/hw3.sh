@@ -1,0 +1,1 @@
+/usr/bin/ansible-playbook hw3.yml -connection=local

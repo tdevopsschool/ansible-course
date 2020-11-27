@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  gather_facts: no
+#  vars:
+#    users: "{{ lookup('file', 'users.txt') }}"
+  roles:
+    - snmpd
+    - iptables
+    - printusers

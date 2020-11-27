@@ -1,0 +1,1 @@
+/usr/bin/ansible-playbook -vvv -M ./roles/iptables/modules -M ./roles/printusers/plugins hw4.yml  --connection=local

@@ -1,0 +1,68 @@
+---
+- name: HW.3 alipin
+  hosts: localhost
+  gather_facts: no
+  vars:
+    iptables_allowed_ports:
+      - {protocol: udp, port: 161}
+      - {protocol: tcp, port: 443}
+    snmp_server_ip: "public 127.0.0.1"
+  tasks:
+  - name: Install snmpd & iptables
+    apt:
+      name: "{{ packet_name_item }}"
+      state: present
+    loop:
+    - iptables
+    - snmpd
+    loop_control:
+       loop_var: packet_name_item
+    register: testout
+    become: yes
+
+  - name: Configure snmpd via template module
+    template:
+        backup: yes
+        src: "snmpd.j2"
+        dest: "/etc/snmp/snmpd.conf"
+    register: snmp_result
+    become: yes
+
+  - name: Configure snmpd
+    service:
+      name: snmpd
+      state: restarted
+    become: yes
+    when: snmp_result.changed
+    become: yes
+
+  - name: create dir sysconfig
+    file:
+     path: /etc/sysconfig
+     state: directory
+     mode: '0755'
+
+  - name: Open via template module & loops ports
+    template:
+        backup: yes
+        src: "{{ iptbls_name_item }}.j2"
+        dest: "/etc/sysconfig/{{ iptbls_name_item }}"
+        validate: "/sbin/{{ iptbls_name_item }}-restore --test %s"
+    loop:
+        - iptables
+        - ip6tables
+    loop_control:
+        loop_var: iptbls_name_item
+    register: iptables_rules_install_result
+    become: yes
+
+  - name: dump test output
+    debug:
+      msg: '{{ item }}'
+    with_items: "{{ iptables_rules_install_result.results }}"
+
+  - name: reload iptables
+    command: /sbin/{{ item.iptbls_name_item }}-restore {{ item.dest }}
+    with_items: "{{ iptables_rules_install_result.results }}"
+    when: item.changed
+    become: yes
