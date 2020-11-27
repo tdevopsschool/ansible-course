@@ -1,0 +1,28 @@
+INFO interface: error: The guest machine entered an invalid state while waiting for it
+to boot. Valid states are 'starting, running'. The machine is in the
+'unknown' state. Please verify everything is configured
+properly and try again.
+
+it is often helpful to open that and watch the machine, since the
+GUI often has more helpful error messages than Vagrant can retrieve.
+For example, if you're using VirtualBox, run `vagrant up` while the
+VirtualBox GUI is open.
+
+The primary issue for this error is that the provider you're using
+is not properly configured. This is very rarely a Vagrant issue.
+The guest machine entered an invalid state while waiting for it
+to boot. Valid states are 'starting, running'. The machine is in the
+'unknown' state. Please verify everything is configured
+properly and try again.
+
+If the provider you're using has a GUI that comes with it,
+it is often helpful to open that and watch the machine, since the
+GUI often has more helpful error messages than Vagrant can retrieve.
+For example, if you're using VirtualBox, run `vagrant up` while the
+VirtualBox GUI is open.
+
+The primary issue for this error is that the provider you're using
+is not properly configured. This is very rarely a Vagrant issue.
+ INFO interface: Machine: error-exit ["Vagrant::Errors::VMBootBadState", "The guest machine entered an invalid state while waiting for it\nto boot. Valid states are 'starting, running'. The machine is in the\n'unknown' state. Please verify everything is configured\nproperly and try again.\n\nIf the provider you're using has a GUI that comes with it,\nit is often helpful to open that and watch the machine, since the\nGUI often has more helpful error messages than Vagrant can retrieve.\nFor example, if you're using VirtualBox, run `vagrant up` while the\nVirtualBox GUI is open.\n\nThe primary issue for this error is that the provider you're using\nis not properly configured. This is very rarely a Vagrant issue."]
+PS C:\ansible-course\student_files\01> vagrant halt      
+==> default: Attempting graceful shutdown of VM...

@@ -1,0 +1,64 @@
+[vagrant@localhost ~]$ history | cut -c 8-
+exit
+ll
+ls
+[wd
+pwd
+ls
+cd /vagrant
+ls
+cat provision_me.sh
+sudo bash provision_me.sh
+iptables -L
+sudo su
+ssh-keygen
+ssh-copy-id check_inv
+ssh check_inv
+ansible-playbook -vvv -i inventory.ini /vagrant/provision_me.yml
+history | less
+history
+ansible-playbook -i inventory.ini /vagrant/provision_me.yml
+exit
+history
+exit
+history
+sudo su
+ansible-playbook -vvv -i inventory.ini /vagrant/provision_me.yml
+less /vagrant/provision_me.yml
+ssh check_inv
+cat /home/vagrant/inventory.ini
+ansible-playbook -vvv -i /vagrant/inventory.ini /vagrant/provision_me.yml
+exit
+ansible-playbook  -i /vagrant/inventory.ini /vagrant/provision_me.yml
+
+[vagrant@localhost vagrant]$ history | cut -c 8-
+exit
+ll
+ls
+[wd
+pwd
+ls
+cd /vagrant
+ls
+cat provision_me.sh
+sudo bash provision_me.sh
+iptables -L
+sudo su
+ssh-keygen
+ssh-copy-id check_inv
+ssh check_inv
+ansible-playbook -vvv -i inventory.ini /vagrant/provision_me.yml
+history | less
+history
+ansible-playbook -i inventory.ini /vagrant/provision_me.yml
+exit
+history
+exit
+history
+sudo su
+ansible-playbook -vvv -i inventory.ini /vagrant/provision_me.yml
+less /vagrant/provision_me.yml
+ssh check_inv
+cat /home/vagrant/inventory.ini
+ansible-playbook -vvv -i /vagrant/inventory.ini /vagrant/provision_me.yml
+exit
