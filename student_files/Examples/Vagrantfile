@@ -1,0 +1,67 @@
+Vagrant.configure("2") do |config|
+    unless ENV['http_proxy'].nil?
+        config.proxy.enabled  = true
+        # set values from environmental variables
+        config.proxy.http     = ENV['http_proxy']
+        config.proxy.https    = ENV['http_proxy']
+        config.proxy.no_proxy = ENV['no_proxy']
+    end
+
+    $hosts_script = <<-SHELL
+    sudo cp /etc/hosts /root && \
+    sudo echo '192.168.1.10 ansible.lan ansible' >> /etc/hosts && \
+    sudo echo '192.168.1.11 node01.lan node01' >> /etc/hosts
+SHELL
+    
+    $ssh_script = <<-SHELL
+    ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y 2>&1 >/dev/null && \
+    echo "StrictHostKeyChecking no" >> ~/.ssh/config && \ 
+    chmod 600 ~/.ssh/config && \
+    sshpass -p 'vagrant' ssh-copy-id -i ~/.ssh/id_rsa -f vagrant@node01    
+SHELL
+
+    config.vm.define "node01" do |node01_config|
+        #Operating System
+        node01_config.vm.box = 'bento/centos-7.7'
+        node01_config.vm.hostname = "node01.lan"
+        #How the Host sees the Box
+        node01_config.vm.network "private_network", ip: "192.168.1.11"
+        node01_config.vm.network "forwarded_port", guest: 80, host: "8080" 
+        # sync folder
+        node01_config.vm.synced_folder "C:\\Users\\vvlasov\\Documents\\Ansible\\ansible-course\\student_files\\01", "/vagrant", mount_options: ['dmode=775,fmode=644']
+        
+        #Using VirtualBox to launch the machine
+        node01_config.vm.provider "virtualbox" do |vb|
+            vb.name = "node01"
+            opts = ["modifyvm", :id, "--natdnshostresolver1", "on"]
+            vb.customize opts
+            vb.memory = 1024
+            vb.cpus = 1
+        end # of vb
+        node01_config.vm.provision "shell", inline: $hosts_script
+    end # of node01_config
+
+    config.vm.define "ansible" do |ansible_config|
+        #Operating System
+        ansible_config.vm.box = 'bento/centos-7.7'
+        ansible_config.vm.hostname = "ansible.lan"
+        #How the Host sees the Box
+        ansible_config.vm.network "private_network", ip: "192.168.1.10"
+        # sync folder
+        ansible_config.vm.synced_folder 'C:\\Users\\vvlasov\\Documents\\Ansible\\ansible-course\\student_files\\01', '/vagrant', mount_options: ['dmode=775,fmode=644']
+        
+        #Using VirtualBox to launch the machine
+        ansible_config.vm.provider "virtualbox" do |vb|
+            vb.name = "ansible"
+            opts = ["modifyvm", :id, "--natdnshostresolver1", "on"]
+            vb.customize opts
+            vb.memory = 1024
+            vb.cpus = 1
+            #You can also define the number of cpus: vb.cpus = x
+        end # of vb
+        ansible_config.vm.provision "shell", inline: "sudo yum install epel-release -y && sudo yum install ansible -y"
+        ansible_config.vm.provision "shell", inline: $hosts_script
+        ansible_config.vm.provision "shell", inline: $ssh_script, privileged: false
+    end # of ansible_config
+
+end
