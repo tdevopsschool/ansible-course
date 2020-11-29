@@ -1,0 +1,22 @@
+# to use GIT, TERRAFORM and VARGANT on NUCLEUS follow next steps:
+# 1.
+# add local dns records to hosts 
+# nucleus is denied for resolve external internet dns
+
+140.82.121.4 github.com
+151.101.0.223 pypi.org
+151.101.37.63 files.pythonhosted.org
+104.16.16.35 registry.yarnpkg.com
+52.216.136.172 mapbox-node-binary.s3.amazonaws.com
+151.101.38.133 dl-cdn.alpinelinux.org
+151.101.38.49 registry.terraform.io
+52.216.9.115 github-production-release-asset-2e65be.s3.amazonaws.com
+151.101.37.183 releases.hashicorp.com dualstack.s.shared.global.fastly.net
+204.236.226.251 checkpoint-api.hashicorp.com 
+3.212.91.42 archivist.vagrantup.com
+52.217.69.20 vagrantcloud-files-production.s3.amazonaws.com
+
+
+# 2.
+# run git to use russian proxy
+git config --global http.proxy http://proxy.t-systems.ru:3128
