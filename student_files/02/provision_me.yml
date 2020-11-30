@@ -44,7 +44,7 @@
         user: "{{ user.login }}"
         state: present
         key: "{{ user.authorized_key }}"
-    
+        
     - name: Set permission to SSH keys
       file:
         path: /home/{{ user.login }}/.ssh/authorized_keys
