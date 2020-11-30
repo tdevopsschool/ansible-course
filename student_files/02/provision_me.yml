@@ -1,6 +1,6 @@
 ---
 
-- name: HomeWork_02
+- name: Install 2048
   hosts: all
   become: true
   become_user: root
