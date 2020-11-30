@@ -1,6 +1,6 @@
 ---
 
-- name: Install 2048
+- name: HomeWork_02
   hosts: all
   become: true
   become_user: root
@@ -17,46 +17,100 @@
         hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZE\
         nDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHln\
         VYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+
   tasks:
-    - name: Create admin account
+    - name: Create account for deploy
       user:
         name: "{{ user.login }}"
         shell: /bin/bash
         update_password: always
         password: "{{ user.password_hash }}"
-    - name: Add admin to sudoers
+
+    - name: Add deploy user to sudoers
       lineinfile:
-        dest: /etc/sudoers
+        path: /etc/sudoers
         state: present
         line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    - name: Create authorized key for admin
+        validate: visudo -cf %s
+
+    - name: Create folder structure for SSH keys
+      file:
+        path: /home/"{{ user.login }}"/.ssh
+        state: directory
+        mode: '0700'
+
+    - name: Create authorized key for user deploy
       authorized_key:
         user: "{{ user.login }}"
         state: present
         key: "{{ user.authorized_key }}"
+    
+    - name: Set permission to SSH keys
+      file:
+        path: /home/{{ user.login }}/.ssh/authorized_keys
+        mode: '0600'
+
+    - name: Set appropriate permissions to SSH keys folder
+      file:
+        path: /home/{{ user.login }}/.ssh
+        owner: deploy
+        group: deploy
+        recurse: yes
+
     - name: Install software
       package:
         name:
           - httpd
           - git
+          - iptables-services
+          - net-snmp
+          - net-snmp-utils
         state: present
+
     - name: Checkout git repository
       git:
         repo: https://github.com/ultral/2048.git
         dest: /var/www/html
         force: true
         version: fc1ef4fe5a5fcccea7590f3e4c187c75980b353f
+
+    - name: Configure SNMPD
+      lineinfile:
+        path: /etc/snmp/snmpd.conf
+        state: present
+        line: "{{ item.line}}"
+        insertafter: EOF
+      with_items:
+        - {line: syslocation Server Room }
+        - {line: syscontact SysAdmin (devops@example.com) }
+        - {line: rocommunity snmp_secret_rocommunity }
+
     - name: Allow access via HTTP
       iptables:
         chain: INPUT
         protocol: tcp
-        destination_port: 80
+        destination_port: '80'
         ctstate: NEW
         jump: ACCEPT
+
+    - name: Allow access via SNMP
+      iptables:
+        chain: INPUT
+        protocol: udp
+        destination_port: '161'
+        ctstate: NEW
+        jump: ACCEPT
+
     - name: Start httpd
       systemd:
         name: httpd
         state: started
+
+    - name: Start snmpd
+      systemd:
+        name: snmpd
+        state: started
+
     - name: Print message
       debug:
         msg: "Play 2028: http://localhost:8080/"
