@@ -78,7 +78,7 @@
       lineinfile:
         path: /etc/snmp/snmpd.conf
         state: present
-        line: "{{ item.line}}"
+        line: "{{ item.line }}"
         insertafter: EOF
       with_items:
         - {line: syslocation Server Room }
