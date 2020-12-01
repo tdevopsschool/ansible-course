@@ -80,16 +80,27 @@
         ctstate: NEW
         jump: ACCEPT
 
-    - name: Copy a new "snmpd.conf file into /etc/snmpd/snmpd.conf
-      copy:
-        src: /vagrant/snmpd.conf
-        dest: /etc/snmp/snmpd.conf
-        owner: "{{ user.login }}"
-        group: "{{ user.group }}"
-        remote_src: yes
-        mode: preserve
-        force: true
-        backup: true
+#    - name: Copy a new "snmpd.conf file into /etc/snmpd/snmpd.conf
+#      copy:
+#        src: /vagrant/snmpd.conf
+#        dest: /etc/snmp/snmpd.conf
+#       owner: "{{ user.login }}"
+#        group: "{{ user.group }}"
+#        remote_src: yes
+#        mode: preserve
+#        force: true
+#        backup: true
+
+    - name: Configure snmpd via blockinfile
+      blockinfile:
+        path: /etc/snmp/snmpd.conf
+        state: present
+        block: |
+          syslocation Server Room
+          syscontact SysAdmin (devops@example.com)
+          rocommunity snmp_secret_rocommunity
+        insertafter: EOF
+
 
     - name: Start httpd
       systemd:
