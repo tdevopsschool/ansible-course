@@ -19,7 +19,7 @@
         nDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHln\
         VYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
       group: "{{ sshgroup_name }}"
-    
+
   tasks:
     - name: Create {{ sshgroup_name }} group for {{ user.login }}
       group:
@@ -41,7 +41,7 @@
         line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
         validate: '/usr/sbin/visudo -cf %s'
 
-    - name: Create authorized key for user {{ user.login }} 
+    - name: Create authorized key for user {{ user.login }}
       authorized_key:
         user: "{{ user.login }}"
         state: present
@@ -52,7 +52,7 @@
         name:
           - httpd
           - git
-          - iptables-services 
+          - iptables-services
           - net-snmp
           - net-snmp-utils
         state: present
@@ -87,8 +87,8 @@
         owner: root
         group: root
         mode: '0600'
-        force: yes
-        backup: yes
+        force: true
+        backup: true
 
     - name: Start httpd
       systemd:
@@ -98,7 +98,7 @@
     - name: Start and enable snmpd
       systemd:
         name: snmpd
-        enabled: yes
+        enabled: true
         state: started
 
     - name: Print message
