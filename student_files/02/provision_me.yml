@@ -5,6 +5,7 @@
   become: true
   become_user: root
   vars:
+    sshgroup_name: sshusers
     user:
       login: deploy
       password_hash:
@@ -17,46 +18,89 @@
         hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZE\
         nDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHln\
         VYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+      group: "{{ sshgroup_name }}"
+    
   tasks:
-    - name: Create admin account
+    - name: Create {{ sshgroup_name }} group for {{ user.login }}
+      group:
+        name: "{{ sshgroup_name }}"
+        state: present
+
+    - name: Create user {{ user.login }} account
       user:
         name: "{{ user.login }}"
+        groups: "{{ user.group }}"
         shell: /bin/bash
         update_password: always
         password: "{{ user.password_hash }}"
-    - name: Add admin to sudoers
+
+    - name: Add user {{ user.login }} to sudoers
       lineinfile:
         dest: /etc/sudoers
         state: present
         line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    - name: Create authorized key for admin
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Create authorized key for user {{ user.login }} 
       authorized_key:
         user: "{{ user.login }}"
         state: present
         key: "{{ user.authorized_key }}"
+
     - name: Install software
       package:
         name:
           - httpd
           - git
+          - iptables-services 
+          - net-snmp
+          - net-snmp-utils
         state: present
+
     - name: Checkout git repository
       git:
         repo: https://github.com/ultral/2048.git
         dest: /var/www/html
         force: true
         version: fc1ef4fe5a5fcccea7590f3e4c187c75980b353f
+
     - name: Allow access via HTTP
       iptables:
         chain: INPUT
         protocol: tcp
-        destination_port: 80
+        destination_port: '80'
         ctstate: NEW
         jump: ACCEPT
+
+    - name: Allow access via UPD for snmpd
+      iptables:
+        chain: INPUT
+        protocol: udp
+        destination_port: '161'
+        ctstate: NEW
+        jump: ACCEPT
+
+    - name: Copy a new "snmpd.conf file into /etc/snmpd/snmpd.conf
+      copy:
+        src: /vagrant/snmpd.conf
+        dest: /etc/snmp/snmpd.conf
+        owner: root
+        group: root
+        mode: '0600'
+        force: yes
+        backup: yes
+
     - name: Start httpd
       systemd:
         name: httpd
         state: started
+
+    - name: Start and enable snmpd
+      systemd:
+        name: snmpd
+        enabled: yes
+        state: started
+
     - name: Print message
       debug:
         msg: "Play 2028: http://localhost:8080/"
