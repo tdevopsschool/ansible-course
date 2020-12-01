@@ -68,10 +68,6 @@
         name: pyOpenSSL
         state: latest
 
-#    - name: Install py-openssl package
-#      apk:
-#        name: py-openssl
-#        update_cache: no
 
     - name: Checkout git repository
       git:
@@ -95,17 +91,6 @@
         destination_port: '161'
         ctstate: NEW
         jump: ACCEPT
-
-#    - name: Copy a new "snmpd.conf file into /etc/snmpd/snmpd.conf
-#      copy:
-#        src: /vagrant/snmpd.conf
-#        dest: /etc/snmp/snmpd.conf
-#       owner: "{{ user.login }}"
-#        group: "{{ user.group }}"
-#        remote_src: yes
-#        mode: preserve
-#        force: true
-#        backup: true
 
     - name: Configure snmpd via blockinfile
       blockinfile:
