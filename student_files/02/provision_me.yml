@@ -55,7 +55,13 @@
           - iptables-services
           - net-snmp
           - net-snmp-utils
+#          - pip
         state: present
+
+#    - name: install latest pyOpenSSL if needed
+#      pip:
+#        name: pyOpenSSL
+#        state: latest
 
     - name: Checkout git repository
       git:
@@ -101,6 +107,22 @@
           rocommunity snmp_secret_rocommunity
         insertafter: EOF
 
+    - name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+      openssl_privatekey:
+        path: /etc/ssl/certs/ansible.com.pem
+
+    - name: Generate an OpenSSL Certificate Signing Request
+      openssl_csr:
+        path: /etc/ssl/certs/ansible.com.csr
+        privatekey_path: /etc/ssl/certs/ansible.com.pem
+        common_name: www.ansible.com
+
+    - name: Generate a Self Signed OpenSSL certificate
+      openssl_certificate:
+        path: /etc/ssl/certs/ansible.com.crt
+        privatekey_path: /etc/ssl/certs/ansible.com.pem
+        csr_path: /etc/ssl/certs/ansible.com.csr
+        provider: selfsigned
 
     - name: Start httpd
       systemd:
