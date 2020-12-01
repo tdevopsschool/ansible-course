@@ -86,7 +86,8 @@
         dest: /etc/snmp/snmpd.conf
         owner: "{{ user.login }}"
         group: "{{ user.group }}"
-        mode: '0600'
+        remote_src: yes
+        mode: preserve
         force: true
         backup: true
 
