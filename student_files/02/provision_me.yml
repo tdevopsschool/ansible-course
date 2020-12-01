@@ -55,7 +55,7 @@
         path: /home/{{ user.login }}/.ssh
         owner: deploy
         group: deploy
-        recurse: yes
+        recurse: true
 
     - name: Install software
       package:
@@ -78,7 +78,7 @@
       blockinfile:
         path: /etc/snmp/snmpd.conf
         state: present
-        block: | 
+        block: |
           syslocation Server Room
           syscontact SysAdmin (devops@example.com)
           rocommunity snmp_secret_rocommunity
