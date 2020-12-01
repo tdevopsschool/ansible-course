@@ -55,13 +55,23 @@
           - iptables-services
           - net-snmp
           - net-snmp-utils
-#          - pip
         state: present
 
-#    - name: install latest pyOpenSSL if needed
-#      pip:
-#        name: pyOpenSSL
-#        state: latest
+    - name: Install Python PIP RPMs
+      become: true
+      package:
+        name: python2-pip
+        state: present
+
+    - name: install latest pyOpenSSL if needed
+      pip:
+        name: pyOpenSSL
+        state: latest
+
+#    - name: Install py-openssl package
+#      apk:
+#        name: py-openssl
+#        update_cache: no
 
     - name: Checkout git repository
       git:
