@@ -75,15 +75,14 @@
         version: fc1ef4fe5a5fcccea7590f3e4c187c75980b353f
 
     - name: Configure SNMPD
-      lineinfile:
+      blockinfile:
         path: /etc/snmp/snmpd.conf
         state: present
-        line: "{{ item.line }}"
+        block: | 
+          syslocation Server Room
+          syscontact SysAdmin (devops@example.com)
+          rocommunity snmp_secret_rocommunity
         insertafter: EOF
-      with_items:
-        - {line: syslocation Server Room }
-        - {line: syscontact SysAdmin (devops@example.com) }
-        - {line: rocommunity snmp_secret_rocommunity }
 
     - name: Allow access via HTTP
       iptables:
