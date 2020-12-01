@@ -84,8 +84,8 @@
       copy:
         src: /vagrant/snmpd.conf
         dest: /etc/snmp/snmpd.conf
-        owner: root
-        group: root
+        owner: "{{ user.login }}"
+        group: "{{ user.group }}"
         mode: '0600'
         force: true
         backup: true
