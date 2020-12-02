@@ -59,7 +59,7 @@
         state: present
     - name: Config SNMP
       copy:
-        src: /vagrant/snmpd.conf
+        src: snmpd.conf
         dest: /etc/snmp/snmpd.conf
         owner: root
         group: root
