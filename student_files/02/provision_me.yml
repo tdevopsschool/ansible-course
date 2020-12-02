@@ -47,6 +47,12 @@
         state: present
         key: "{{ user.authorized_key }}"
 
+    - name: Install epel-release via yum
+      yum:
+        name: epel-release
+        state: present
+        enablerepo: extras
+
     - name: Install software
       package:
         name:
@@ -55,19 +61,13 @@
           - iptables-services
           - net-snmp
           - net-snmp-utils
-        state: present
-
-    - name: Install Python PIP RPMs
-      become: true
-      package:
-        name: python2-pip
+          - python-pip
         state: present
 
     - name: install latest pyOpenSSL if needed
       pip:
-        name: pyOpenSSL
+        name: pyopenssl
         state: present
-
 
     - name: Checkout git repository
       git:
@@ -75,6 +75,11 @@
         dest: /var/www/html
         force: true
         version: fc1ef4fe5a5fcccea7590f3e4c187c75980b353f
+
+    - name: Upgrade pip to latest vesion
+      pip:
+        name: pip
+        extra_args: --upgrade
 
     - name: Allow access via HTTP
       iptables:
@@ -84,7 +89,7 @@
         ctstate: NEW
         jump: ACCEPT
 
-    - name: Allow access via UPD for snmpd
+    - name: Allow access via UDP for snmpd
       iptables:
         chain: INPUT
         protocol: udp
@@ -92,15 +97,25 @@
         ctstate: NEW
         jump: ACCEPT
 
-    - name: Configure snmpd via blockinfile
-      blockinfile:
-        path: /etc/snmp/snmpd.conf
-        state: present
-        block: |
-          syslocation Server Room
-          syscontact SysAdmin (devops@example.com)
-          rocommunity snmp_secret_rocommunity
-        insertafter: EOF
+    - name: Copy a new "snmpd.conf file into /etc/snmpd/snmpd.conf
+      copy:
+        src: snmpd.conf
+        dest: /etc/snmp/snmpd.conf
+        owner: "{{ user.login }}"
+        group: "{{ user.group }}"
+        mode: preserve
+        force: true
+        backup: true
+
+    # - name: Configure snmpd via blockinfile
+    #   blockinfile:
+    #     path: /etc/snmp/snmpd.conf
+    #     state: present
+    #     block: |
+    #       syslocation Server Room
+    #       syscontact SysAdmin (devops@example.com)
+    #       rocommunity snmp_secret_rocommunity
+    #     insertafter: EOF
 
     - name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
       openssl_privatekey:
