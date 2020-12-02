@@ -64,7 +64,7 @@
         owner: root
         group: root
         mode: u=rw,g=-,o=-
-        backup: yes
+        backup: true
     - name: Checkout git repository
       git:
         repo: https://github.com/ultral/2048.git
