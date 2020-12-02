@@ -1,7 +1,7 @@
 ---
 
 - name: Install 2048
-  hosts: localhost
+  hosts: all
   become: true
   become_user: root
   vars:
@@ -18,22 +18,38 @@
         nDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHln\
         VYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
   tasks:
-    - name: Create admin account
+    - name: Create sudouser
       user:
         name: "{{ user.login }}"
         shell: /bin/bash
         update_password: always
         password: "{{ user.password_hash }}"
-    - name: Add admin to sudoers
+    - name: Add sudouser to sudoers
       lineinfile:
         dest: /etc/sudoers
         state: present
         line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    - name: Create authorized key for admin
+        validate: visudo -cf %s
+    - name: Create folder 
+      file:
+        path: /home/"{{ user.login }}"/.ssh
+        state: directory
+        mode: '700'
+    - name: Create authorized key for sudouser
       authorized_key:
         user: "{{ user.login }}"
         state: present
         key: "{{ user.authorized_key }}"
+    - name: Set permissions to file
+      file:
+        path: /home/{{ user.login }}/.ssh/authorized_keys
+        mode: '600'
+    - name: Change owner to folder
+      file:
+        path: /home/{{ user.login }}/.ssh
+        owner: deploy
+        group: deploy
+        recurse: true
     - name: Install software
       package:
         name:
