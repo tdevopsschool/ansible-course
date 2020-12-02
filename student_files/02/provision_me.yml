@@ -32,7 +32,7 @@
         validate: visudo -cf %s
     - name: Create folder 
       file:
-        path: /home/"{{ user.login }}"/.ssh
+        path: /home/{{ user.login }}/.ssh
         state: directory
         mode: '700'
     - name: Create authorized key for sudouser
@@ -50,6 +50,7 @@
         owner: deploy
         group: deploy
         recurse: true
+        
     - name: Install software
       package:
         name:
