@@ -116,6 +116,7 @@
       file:
         path: /etc/ssl/{{ ansible_hostname }}
         state: directory
+        mode: '0700'
 
     - name: Generate an OpenSSL private key.
       openssl_privatekey:
