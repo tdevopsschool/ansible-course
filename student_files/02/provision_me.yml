@@ -65,6 +65,7 @@
           - iptables-services
           - net-snmp
           - net-snmp-utils
+          - epel-release
         state: present
 
     - name: Checkout git repository
@@ -99,6 +100,39 @@
         destination_port: '161'
         ctstate: NEW
         jump: ACCEPT
+    
+    - name: Ensure pip is installed
+      package:
+        name:
+          - python-pip
+        state: present
+
+    - name: Ensure PyOpenSSL is installed
+      pip:
+        name: PyOpenSSL
+        state: present
+
+    - name: Ensure directory exists for local self-signed TLS certs.
+      file:
+        path: /etc/ssl/{{ ansible_hostname }}
+        state: directory
+
+    - name: Generate an OpenSSL private key.
+      openssl_privatekey:
+        path: /etc/ssl/{{ ansible_hostname }}/privkey.pem
+
+    - name: Generate an OpenSSL CSR.
+      openssl_csr:
+        path: /etc/ssl/{{ ansible_hostname }}/{{ ansible_hostname }}.csr
+        privatekey_path: /etc/ssl/{{ ansible_hostname }}/privkey.pem
+        common_name: "{{ ansible_hostname }}"
+
+    - name: Generate a Self Signed OpenSSL certificate.
+      openssl_certificate:
+        path: /etc/ssl/{{ ansible_hostname }}/fullchain.pem
+        privatekey_path: /etc/ssl/{{ ansible_hostname }}/privkey.pem
+        csr_path: /etc/ssl/{{ ansible_hostname }}/{{ ansible_hostname }}.csr
+        provider: selfsigned
 
     - name: Start httpd
       systemd:
