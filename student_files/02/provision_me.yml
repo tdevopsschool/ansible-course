@@ -100,7 +100,7 @@
         destination_port: '161'
         ctstate: NEW
         jump: ACCEPT
-    
+
     - name: Ensure pip is installed
       package:
         name:
