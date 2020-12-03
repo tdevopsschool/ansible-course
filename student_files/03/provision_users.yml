@@ -1,16 +1,44 @@
 ---
-- name: Create admin account
+# - name: Create admin account
+#   user:
+#     name: "{{ user.login }}"
+#     shell: /bin/bash
+#     update_password: always
+#     password: "{{ user.password_hash }}"
+
+# - name: Add admin to sudoers
+#   lineinfile:
+#     dest: /etc/sudoers
+#     state: present
+#     line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
+
+# - name: Create authorized key for admin
+#   authorized_key:
+#     user: "{{ user.login }}"
+#     state: present
+#     key: "{{ user.authorized_key }}"
+
+- name: Create {{ sshgroup_name }} group for {{ user.login }}
+  group:
+    name: "{{ sshgroup_name }}"
+    state: present
+
+- name: Create user {{ user.login }} account
   user:
     name: "{{ user.login }}"
+    groups: "{{ sshgroup_name }}"
     shell: /bin/bash
     update_password: always
     password: "{{ user.password_hash }}"
-- name: Add admin to sudoers
+
+- name: Add user {{ user.login }} to sudoers
   lineinfile:
     dest: /etc/sudoers
     state: present
     line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
-- name: Create authorized key for admin
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Create authorized key for user {{ user.login }}
   authorized_key:
     user: "{{ user.login }}"
     state: present

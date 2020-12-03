@@ -6,9 +6,16 @@
   become_user: root
   vars:
     iptables_allowed_ports:
+      # default
       - {protocol: tcp, port: 180}
       - {protocol: tcp, port: 1443}
       - {protocol: udp, port: 1161}
+      # task3.3
+      - {protocol: udp, port: 161}
+      - {protocol: tcp, port: 443}
+      # httpd
+      - {protocol: tcp, port: 80}
+    sshgroup_name: sshusers
     user:
       login: deploy
       password_hash:
@@ -21,6 +28,9 @@
         5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0\
         jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE9\
         8OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+    snmpd_config:
+      - {access: rocommunity, community: public, address: 127.0.0.1}
+      - {access: rocommunity, community: private, address: 192.168.1.1}
   tasks:
     - name: Create admin user
       import_tasks: provision_users.yml

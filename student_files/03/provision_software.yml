@@ -11,11 +11,36 @@
   package:
     name:
       - httpd
+      - net-snmp
+      - net-snmp-utils
     state: present
   when: ansible_distribution == 'CentOS'
+
 - name: Install software Ubuntu
   package:
     name:
       - apache2
+      - snmpd
     state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Configure snmpd via template module
+  template:
+    src: "snmpd_conf.j2"
+    dest: "/etc/snmp/snmpd.conf"
+    owner: root
+    group: root
+    mode: '0600'
+    backup: true
+  register: snmpd_config_result
+  become: true
+
+- name: Restart snmpd if config changed
+  systemd:
+    name: snmpd
+    state: restarted
+    daemon_reload: true
+  when: snmpd_config_result.changed
+  become: true
+  tags:
+    - skip_ansible_lint

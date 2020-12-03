@@ -18,9 +18,10 @@
   # ansible lint complains about reloading, so we disable that warning
   # noqa 503
   # also  iptables-restore doesn't work inside docker, so we skip the step
-  command: iptables-restore /etc/sysconfig/iptables
+  command: "{{ item.iptables_filename }}-restore /etc/sysconfig/{{ item.iptables_filename }}"
   when:
-    - iptables_rules_install_result.changed
+    - item.changed
     # should be removed after releasing https://github.com/ansible/ansible/issues/66304
     - ansible_virtualization_type != "docker"
     - ansible_virtualization_type != "VirtualPC"
+  with_items: "{{ iptables_rules_install_result.results }}"
