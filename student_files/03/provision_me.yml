@@ -7,7 +7,9 @@
   vars:
     iptables_allowed_ports:
       - {protocol: tcp, port: 180}
+      - {protocol: tcp, port: 443}
       - {protocol: tcp, port: 1443}
+      - {protocol: udp, port: 161}
       - {protocol: udp, port: 1161}
     user:
       login: deploy
@@ -21,6 +23,8 @@
         5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0\
         jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE9\
         8OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
+    snmp_community: snmp_secret_community
+
   tasks:
     - name: Create admin user
       import_tasks: provision_users.yml
@@ -28,6 +32,8 @@
       import_tasks: provision_software.yml
     - name: Configure iptables
       import_tasks: provision_iptables.yml
+    - name: Configure SNMP
+      import_tasks: provision_snmpd.yml
     - name: Install game 2048
       import_tasks: provision_site.yml
     - name: Print message
