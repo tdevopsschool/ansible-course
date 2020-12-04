@@ -25,5 +25,12 @@ config.proxy.no_proxy = "localhost,127.0.0.1"
   end
 
   # provision VM via bash
-  config.vm.provision 'shell', path: 'provision_me.sh'
+  # config.vm.provision 'shell', path: 'provision_me.sh'
+  
+  # provision VM via ANSIBLE
+    config.vm.box_download_insecure = true
+    config.vm.provision 'ansible_local' do |ansible|
+    ansible.playbook = "/vagrant/provision_me.yml"
+    ansible.verbose = 'v'
+	end
 end
