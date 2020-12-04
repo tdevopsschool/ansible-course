@@ -1,0 +1,6 @@
+---
+
+- name: Install snmpd
+  import_tasks: install_snmpd.yml
+- name: Confgure snmpd
+  import_tasks: configure_snmpd.yml

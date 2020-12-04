@@ -23,8 +23,8 @@
 -A INPUT -p tcp --dport 22 -j ACCEPT
 
 # Iptables rules template
-{% if iptables_allowed_ports is defined %}
-{% for record in iptables_allowed_ports %}
+{% if iptables__allowed_ports is defined %}
+{% for record in iptables__allowed_ports %}
 -A INPUT -m {{ record.protocol }} -p {{ record.protocol }} --dport {{ record.port }} -j ACCEPT
 {% endfor %}
 {% endif %}
