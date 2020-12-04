@@ -1,5 +1,5 @@
 ---
 - name: Install iptables
-  import_tasks: install_iptables.yml  
+  import_tasks: install_iptables.yml
 - name: Configure iptables
   import_tasks: configure_iptables.yml

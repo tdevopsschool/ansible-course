@@ -1,7 +1,7 @@
 ---
 - name: Install iptables
   package:
-    name: 
+    name:
       - iptables
       - iptables-services
     state: present

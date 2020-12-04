@@ -1,5 +1,4 @@
 ---
-
 - name: Install snmpd
   import_tasks: install_snmpd.yml
 - name: Confgure snmpd
