@@ -1,7 +1,8 @@
 ---
 
 - name: Install 2048
-  hosts: all
+  # hosts: all
+  hosts: localhost
   become: true
   become_user: root
   vars:
