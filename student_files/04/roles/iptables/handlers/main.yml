@@ -1,0 +1,8 @@
+---
+- name: Reload iptables
+  iptables_reload:
+  register: result_iptables_reload
+
+- name: Print iptables module result
+  debug:
+    var: result_iptables_reload
