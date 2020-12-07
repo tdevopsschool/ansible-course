@@ -15,5 +15,5 @@
     - iptables
     - ip6tables
   notify:
-   - Reload iptables
-   - Print iptables module result
+    - Reload iptables
+    - Print iptables module result
