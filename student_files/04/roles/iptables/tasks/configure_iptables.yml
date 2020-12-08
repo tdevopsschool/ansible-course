@@ -1,0 +1,19 @@
+---
+
+- name: Configure iptables
+  template:
+    src: "{{ iptables_filename }}.j2"
+    dest: "/etc/sysconfig/{{ iptables_filename }}"
+    # validate: "/sbin/{{ iptables_filename }}-restore --test %s"
+    mode: 0644
+    owner: root
+    group: root
+  register: iptables_rules_install_result
+  loop_control:
+    loop_var: iptables_filename
+  loop:
+    - iptables
+    - ip6tables
+  notify:
+    - Reload iptables
+    - Print iptables module result

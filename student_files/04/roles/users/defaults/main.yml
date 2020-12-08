@@ -7,3 +7,9 @@ users__super_admins:
     email: dep@loy.me
   - login: deploy2
     email: dep@loy.com
+  - login: deploy3
+    email: dep@loy.cc
+    password_hash: "{{ users__default_password_hash }}"
+  - login: deploy4
+    password_hash: "{{ users__default_password_hash }}"
+  - login: deploy5
