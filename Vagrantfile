@@ -5,6 +5,18 @@
 ansible_roles_path = '/data/roles'
 
 Vagrant.configure('2') do |config|
+
+  # configure vagrant-proxyconf plugin
+  # If proxy is configured via ENV variables
+  # then we configure vagrant to use proxy
+  unless ENV['http_proxy'].nil?
+  config.proxy.enabled  = true
+    # set values from environmental variables
+  config.proxy.http     = ENV['http_proxy']
+  config.proxy.https    = ENV['http_proxy']
+  config.proxy.no_proxy = ENV['no_proxy']
+  end
+
   config.vm.network 'forwarded_port', guest: 80, host: 8080
   config.ssh.insert_key = false
 
