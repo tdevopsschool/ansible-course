@@ -1,0 +1,6 @@
+#
+{% if snmpd_config is defined %}
+{% for record in snmpd_config %}
+{{ record.access }} {{ record.community }} {{ record.address }}
+{% endfor %}
+{% endif %} 
