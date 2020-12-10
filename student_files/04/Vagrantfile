@@ -13,7 +13,7 @@ Vagrant.configure('2') do |config|
     box.memory = 1024
   end
 
-  config.vm.network 'forwarded_port', guest: 80, host: 8080
+  config.vm.network 'forwarded_port', guest: 80, host: 8084
   config.vm.provision 'ansible_local' do |ansible|
     ansible.playbook = '/vagrant/provision_me.yml'
     ansible.verbose = 'v'
