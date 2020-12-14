@@ -1,7 +1,7 @@
 ---
 
 - name: provision server
-  hosts: localhost
+  hosts: all
   become: true
   become_user: root
   vars:
