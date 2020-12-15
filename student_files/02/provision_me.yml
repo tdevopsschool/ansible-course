@@ -1,5 +1,4 @@
 ---
-
 - name: Install 2048
   hosts: all
   become: true
@@ -18,28 +17,54 @@
         nDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHln\
         VYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"
   tasks:
-    - name: Create admin account
+    - name: Create sudouser
       user:
         name: "{{ user.login }}"
         shell: /bin/bash
         update_password: always
         password: "{{ user.password_hash }}"
-    - name: Add admin to sudoers
+    - name: Add sudouser to sudoers
       lineinfile:
         dest: /etc/sudoers
         state: present
         line: "{{ user.login }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    - name: Create authorized key for admin
+        validate: visudo -cf %s
+    - name: Create folder
+      file:
+        path: /home/{{ user.login }}/.ssh
+        state: directory
+        mode: '700'
+    - name: Create authorized key for sudouser
       authorized_key:
         user: "{{ user.login }}"
         state: present
         key: "{{ user.authorized_key }}"
+    - name: Set permissions to file
+      file:
+        path: /home/{{ user.login }}/.ssh/authorized_keys
+        mode: '600'
+    - name: Change owner to folder
+      file:
+        path: /home/{{ user.login }}/.ssh
+        owner: deploy
+        group: deploy
+        recurse: true
     - name: Install software
       package:
         name:
           - httpd
           - git
+          - net-snmp
+          - net-snmp-utils
         state: present
+    - name: Config SNMP
+      copy:
+        src: snmpd.conf
+        dest: /etc/snmp/snmpd.conf
+        owner: root
+        group: root
+        mode: u=rw,g=-,o=-
+        backup: true
     - name: Checkout git repository
       git:
         repo: https://github.com/ultral/2048.git
@@ -50,12 +75,23 @@
       iptables:
         chain: INPUT
         protocol: tcp
-        destination_port: 80
+        destination_port: "80"
+        ctstate: NEW
+        jump: ACCEPT
+    - name: Allow access to SNMP
+      iptables:
+        chain: INPUT
+        protocol: udp
+        destination_port: "161"
         ctstate: NEW
         jump: ACCEPT
     - name: Start httpd
       systemd:
         name: httpd
+        state: started
+    - name: Start snmpd
+      systemd:
+        name: snmpd
         state: started
     - name: Print message
       debug:

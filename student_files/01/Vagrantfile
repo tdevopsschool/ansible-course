@@ -3,12 +3,17 @@ Vagrant.configure('2') do |config|
   # If proxy is configured via ENV variables
   # then we configure vagrant to use proxy
   unless ENV['http_proxy'].nil?
-    config.proxy.enabled  = true
+  config.proxy.enabled  = true
     # set values from environmental variables
-    config.proxy.http     = ENV['http_proxy']
-    config.proxy.https    = ENV['http_proxy']
-    config.proxy.no_proxy = ENV['no_proxy']
+  config.proxy.http     = ENV['http_proxy']
+  config.proxy.https    = ENV['http_proxy']
+  config.proxy.no_proxy = ENV['no_proxy']
   end
+
+#config.proxy.enabled  = false
+# config.proxy.http     = "http://proxy.t-systems.ru:3128"
+# config.proxy.https    = "http://proxy.t-systems.ru:3128"
+# config.proxy.no_proxy = "localhost,127.0.0.1"
 
   config.vm.box = 'bento/centos-7.7'
   config.vm.synced_folder './', '/vagrant', mount_options: ['dmode=775,fmode=644']
@@ -20,5 +25,12 @@ Vagrant.configure('2') do |config|
   end
 
   # provision VM via bash
-  config.vm.provision 'shell', path: 'provision_me.sh'
+  # config.vm.provision 'shell', path: 'provision_me.sh'
+  
+  # provision VM via ANSIBLE
+    config.vm.box_download_insecure = true
+    config.vm.provision 'ansible_local' do |ansible|
+    ansible.playbook = "/vagrant/provision_me.yml"
+    ansible.verbose = 'v'
+	end
 end

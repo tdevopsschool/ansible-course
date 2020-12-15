@@ -2,13 +2,22 @@
 
 - name: Install 2048
   hosts: all
+  # hosts: localhost
   become: true
   become_user: root
   vars:
+        # add according task 3.1
+    snmpd_config:
+      - {access: rocommunity, community: public, address: 127.0.0.1}
+      - {access: rocommunity, community: private, address: 192.168.1.1}
     iptables_allowed_ports:
       - {protocol: tcp, port: 180}
       - {protocol: tcp, port: 1443}
       - {protocol: udp, port: 1161}
+        # add according task 3.2
+      - {protocol: udp, port: 161}
+      - {protocol: tcp, port: 443}
+      - {protocol: tcp, port: 80}
     user:
       login: deploy
       password_hash:
