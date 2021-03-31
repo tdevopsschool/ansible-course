@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+# $env:VAGRANT_FORCE_COLOR      = 'true'
 
-# set default values
 ansible_roles_path = '/data/roles'
 
 Vagrant.configure('2') do |config|
@@ -20,11 +20,11 @@ Vagrant.configure('2') do |config|
 
   config.vm.box_download_insecure = true
   config.vm.provision 'ansible_local' do |ansible|
-    ansible.install_mode = "pip"
+    ansible.install_mode = "pip3"
     ansible.galaxy_roles_path = ansible_roles_path
     ansible.galaxy_role_file = "/vagrant/requirements.yml"
     ansible.playbook = "/vagrant/provision_me.yml"
-    ansible.version = "2.9.15"
+    ansible.version = "2.9.18"
     ansible.verbose = 'v'
   end
 

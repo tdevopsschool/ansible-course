@@ -8,7 +8,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.synced_folder './', '/vagrant', mount_options: ['dmode=775,fmode=644']
-  config.vm.box = 'bento/centos-7.7'
+  config.vm.box = 'bento/centos-7.8'
   config.vm.provider 'virtualbox' do |box|
     box.memory = 1024
   end
@@ -17,5 +17,7 @@ Vagrant.configure('2') do |config|
   config.vm.provision 'ansible_local' do |ansible|
     ansible.playbook = '/vagrant/provision_me.yml'
     ansible.verbose = 'v'
+    ansible.install_mode = "pip3"
+    ansible.version = "2.9.18"
   end
 end
