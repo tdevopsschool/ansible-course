@@ -3,7 +3,7 @@ secret_password: "{{ vault_secret_password }}"
 common__enable_httpd: true
 game2048__git_src: https://github.com/ultral/2048.git
 game2048__git_dst: /var/www/html
-iptables_allowed_ports:
+common__iptables_allowed_ports:
   - {protocol: tcp, port: 80}
   - {protocol: tcp, port: 443}
   - {protocol: udp, port: 161}

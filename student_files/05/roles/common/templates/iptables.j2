@@ -25,7 +25,7 @@
 # Iptables rules template
 {% if common__iptables_allowed_ports is defined %}
 {% for common__record in common__iptables_allowed_ports %}
-{% if common__record.protocol is defined and record.port is defined %}
+{% if common__record.protocol is defined and common__record.port is defined %}
 -A INPUT -m {{ common__record.protocol }} -p {{ common__record.protocol }} --dport {{ common__record.port }} -j ACCEPT
 {% endif %}
 {% endfor %}
