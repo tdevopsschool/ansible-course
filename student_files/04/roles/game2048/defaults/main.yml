@@ -1,9 +1,4 @@
 ---
 game2048__software:
-  - iptables
-  - iptables-services
   - httpd
   - git
-
-game2048__iptables_allowed_ports:
-  - {protocol: tcp, port: 80}

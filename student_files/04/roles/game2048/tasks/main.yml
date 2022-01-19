@@ -1,8 +1,6 @@
 ---
 - name: Install software
   import_tasks: provision_software.yml
-- name: Configure iptables
-  import_tasks: provision_iptables.yml
 - name: Install game 2048
   import_tasks: provision_site.yml
 - name: Print message

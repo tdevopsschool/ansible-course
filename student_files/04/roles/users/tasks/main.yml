@@ -25,3 +25,6 @@
   loop: "{{ users__super_admins }}"
   loop_control:
     loop_var: users__loop_item
+- name: Print users without password hash
+  debug:
+    msg: Users without password hash "{{ users__super_admins | users_without_password_hash }}"
