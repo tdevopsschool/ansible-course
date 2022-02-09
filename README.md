@@ -10,7 +10,7 @@ _The course goal_ is to introduce Configuration Managament and Ansible.
 ## Lessons ENG
 
 * [01. Configuration management](docs/01.md)
-* `02. The first playbook`
+* [02. The first playbook](docs/02.md)
 * `03. Base features`
 * `04. Roles and modules`
 * `05. Best practices`
