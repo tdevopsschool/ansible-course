@@ -24,7 +24,7 @@ Vagrant.configure('2') do |config|
     ansible.galaxy_roles_path = ansible_roles_path
     ansible.galaxy_role_file = "/vagrant/requirements.yml"
     ansible.playbook = "/vagrant/provision_me.yml"
-    ansible.version = "2.9.18"
+    ansible.version = "2.9.27"
     ansible.verbose = 'v'
   end
 
