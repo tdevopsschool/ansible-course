@@ -1,0 +1,42 @@
+## to run vagrant box on Mac with M1 :  
+## install brew ##
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/A345618/.zprofile
+# eval "$(/opt/homebrew/bin/brew shellenv)"
+##
+## install vagrant
+# brew install vagrant
+##
+## install qemu
+# brew install qemu
+##
+## install vagrant plugin https://github.com/ppggff/vagrant-qemu
+# vagrant plugin install vagrant-qemu
+##
+
+Vagrant.configure(2) do |config|
+    config.vm.provider "qemu" do |qe|
+      qe.arch = "x86_64"
+      qe.machine = "q35"
+      qe.cpu = "max"
+      qe.net_device = "virtio-net-pci"
+      qe.memory = "2G"
+    end
+    
+    config.vm.box = "centos/7"
+    config.vm.synced_folder './', '/vagrant', mount_options: ['dmode=775,fmode=644']
+    config.vm.network 'forwarded_port', guest: 80, host: 8080
+  
+  ## provision VM via bash
+  #config.vm.provision 'shell', path: 'provision_me.sh'
+  ##
+  
+  ## provision VM via ANSIBLE
+  config.vm.provision 'ansible_local' do |ansible|
+    ansible.install_mode = "pip3"
+    ansible.playbook = "/vagrant/provision_me.yml"
+    ansible.version = "2.9.27"
+    ansible.verbose = 'v'
+  end
+  
+  end

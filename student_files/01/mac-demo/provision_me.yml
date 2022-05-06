@@ -1,0 +1,33 @@
+---
+
+- name: Install 2048
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Install software
+      package:
+        name:
+          - httpd
+          - git
+        state: present
+    - name: Checkout git repository
+      git:
+        repo: https://github.com/ultral/2048.git
+        dest: /var/www/html
+        force: true
+        version: fc1ef4fe5a5fcccea7590f3e4c187c75980b353f
+    - name: Allow access via HTTP
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 80
+        ctstate: NEW
+        jump: ACCEPT
+    - name: Start httpd
+      systemd:
+        name: httpd
+        state: started
+    - name: Print message
+      debug:
+        msg: "Play 2028: http://localhost:8080/"
