@@ -1,0 +1,7 @@
+---
+- name: Install snmpd
+  package:
+    name:
+      - net-snmp
+      - net-snmp-utils
+    state: present

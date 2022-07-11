@@ -5,10 +5,13 @@
   become: true
   become_user: root
   vars:
-    iptables_allowed_ports:
+    # iptables_allowed_ports:
+    iptables__allowed_ports:
       - {protocol: tcp, port: 80}
       - {protocol: tcp, port: 443}
       - {protocol: udp, port: 161}
   roles:
     - role: users
+    - role: snmpd
+    - role: iptables
     - role: game2048
