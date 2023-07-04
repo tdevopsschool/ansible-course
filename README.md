@@ -10,6 +10,7 @@ _The course goal_ is to introduce Configuration Managament and Ansible.
 ## Ansible links
 
 - sync/fetch https://www.middlewareinventory.com/blog/how-to-copy-files-between-remote-servers-ansible-fetch-sync/
+- Edit files https://ansible-tips-and-tricks.readthedocs.io/en/latest/modifying-files/modifying-files/
 
 ## Homework
 
