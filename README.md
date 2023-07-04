@@ -7,6 +7,10 @@ It is foundation for people who involved into infrastructure topics - devops eng
 
 _The course goal_ is to introduce Configuration Managament and Ansible.
 
+## Ansible links
+
+- sync/fetch https://www.middlewareinventory.com/blog/how-to-copy-files-between-remote-servers-ansible-fetch-sync/
+
 ## Homework
 
 We The course consists of 6 lessons. Our goal is to provision a server and play the game 2048. Each homework goal is to get practical knoledge about related topics.
