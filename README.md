@@ -1,5 +1,7 @@
 # Introduction to ansible
 
+Moved to [https://gitlab.com/t-systems-devops-school/ansible-course](https://gitlab.com/t-systems-devops-school/ansible-course)
+
 Ansible is a modern IT configuration management tool which makes your life easier by managing your servers for you.
 It is foundation for people who involved into infrastructure topics - devops engineers, SRE, developers, build engineers, configuration managers. The course allows to rapidly start using Ansible. The course start from very beginning and Ansible foundtaion, but also it covers a lot of different technical topics like development modules, plugins & best practices.
 
